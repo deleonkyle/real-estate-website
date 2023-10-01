@@ -1,0 +1,92 @@
+/* Style for property cards */
+.property-card {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin: 10px;
+  background-color: #fff;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s;
+}
+
+.property-card:hover {
+  transform: scale(1.05);
+}
+
+.property-card img {
+  max-width: 100%;
+  height: auto;
+}
+
+.property-details h4 {
+  font-size: 20px;
+  margin-top: 10px;
+}
+
+.property-details p {
+  margin-bottom: 5px;
+}
+
+.property-details a {
+  color: #ffffff;
+  text-decoration: none;
+}
+
+/* Style for the Astra Realty logo */
+.logo-img {
+  max-height: 50px; /* Adjust the height as needed */
+  max-width: 100%; /* Ensure the width scales proportionally */
+}
+/* Style for the "View Details" button */
+.view-details-btn {
+  background-color: #ffffff;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.view-details-btn:hover {
+  background-color: #5e5e5e;
+}
+
+/* Center the button text and horizontally center the button */
+.view-details-btn a {
+  text-decoration: none;
+  display: inline-block;
+  text-align: center;
+  width: 100%;
+}
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #ffffff;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #ffffff;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+  /* Custom styles for the navbar */
+  .navbar {
+  background-color: #4fe0a1;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+/* Customize the navbar links color */
+.navbar-light .navbar-nav .nav-link {
+  color: #000000;
+}
+
+/* Style the sticky navbar links on hover */
+.navbar-light .navbar-nav .nav-link:hover {
+  color: #36b2d1;
+}

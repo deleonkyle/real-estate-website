@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/assets/style.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <title>Property Card</title>
+</head>
+<body>
+
+    <!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container">
+      <!-- Astra Realty Logo -->
+      <a class="navbar-brand" href="index">
+        <img src="/static/images/astra-realty-logo.png" alt="Astra Realty Logo" class="logo-img">
+      </a>
+      <!-- Navbar Toggler for Mobile -->
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <!-- Navbar Links -->
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="home">Discover</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Buyer's Guide
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item" href="#buying-tips">Buying Tips</a>
+              <a class="dropdown-item" href="loancal">Loan Calculator</a>
+              <!-- Add more dropdown items as needed -->
+            </div>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="v_tour">Virtual Tour</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="house_list">Explore Homes</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#contact">Contact</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#news">News</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  
+    <div class="container mt-4">
+        <div class="card" style="width: 18rem;">
+            <img src="{{ property_data['image_url'] }}" class="card-img-top" alt="Property Image">
+            <div class="card-body">
+                <h5 class="card-title">{{ property_data['name'] }}</h5>
+                <p class="card-text">Location: {{ property_data['location'] }}</p>
+                <p class="card-text">Price: {{ property_data['price'] }}</p>
+                <p class="card-text">Bedrooms: {{ property_data['bedrooms'] }}</p>
+                <p class="card-text">Bathrooms: {{ property_data['bathrooms'] }}</p>
+                <a href="virtual_tour" class="btn btn-primary">View Virtual Tour</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

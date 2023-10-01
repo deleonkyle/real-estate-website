@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deactivate User</title>
+    <!-- Add your CSS styles and links here -->
+</head>
+<body>
+    <header>
+        <h1>Deactivate User</h1>
+        <!-- Display user-specific information (e.g., username) here -->
+    </header>
+
+    <nav>
+        <!-- Add navigation links or menu items here -->
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/profile">Profile</a></li>
+            <li><a href="/logout">Logout</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <!-- Display deactivation confirmation message -->
+        <p>Are you sure you want to deactivate this user?</p>
+        <p>Username: {{ user.username }}</p>
+        <p>Email: {{ user.email }}</p>
+
+        <!-- Deactivate user form -->
+        <form method="POST" action="/admin/deactivate_user/{{ user.id }}">
+            <input type="submit" value="Deactivate">
+        </form>
+    </main>
+
+    <footer>
+        <!-- Add footer content here -->
+        <p>&copy; 2023 Your Company</p>
+    </footer>
+</body>
+</html>

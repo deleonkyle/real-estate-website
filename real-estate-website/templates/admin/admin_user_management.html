@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Management</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/assets/admin.css">
+    <style>
+        .user-list {
+            margin-top: 20px;
+        }
+
+    </style>
+</head>
+<body>
+    <div>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="custom-alert alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <script>
+                        setTimeout(function() {
+                            document.querySelector('.custom-alert').remove();
+                        }, 3000);
+                    </script>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+    
+        <div class="container-fluid">
+            <div class="row">
+                {% include '/includes/admin_sidebar.html' %}
+
+      
+    <div class="col-md-10">
+        <h2>User Management</h2>
+        <p>Manage user accounts and roles:</p>
+        <p>Number of users: {{ users|length }}</p>
+
+        <!-- Search Form -->
+<form method="GET" action="{{ url_for('admin_user_management') }}" class="mb-3">
+    <div class="input-group custom-search-bar">
+        <input type="text" class="form-control form-control-sm custom-search-input" name="search_query" placeholder="Search...">
+        <div class="input-group-append">
+            <button type="submit" class="btn btn-custom btn-sm">
+                <img src="/static/icons/bx-search-alt-2.svg" alt="Search" class="icon mr-2">
+            </button>            
+        </div>
+    </div>    
+</form>
+
+<!-- Button to show users -->
+<a href="/admin/admin_user_management" class="btn custom-btn">Show All Users</a>
+<a href="/admin/admin_user_management?role=Client" class="btn custom-btn">Show Clients</a>
+<a href="/admin/admin_user_management?role=Agent" class="btn custom-btn">Show Agents</a>
+<a href="/admin/admin_user_management?role=Admin" class="btn custom-btn">Show Admins</a>
+<a href="/admin/admin_user_management?role=Manager" class="btn custom-btn">Show Managers</a>
+
+
+<div class="table-responsive">
+    <table class="table custom-table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+            <tr>
+                <td>{{ user[0] }}</td>
+                <td>{{ user[1] }}</td> <!-- Username -->
+                <td>{{ user[3] }}</td> <!-- Email -->
+                <td>
+                    <form method="POST" action="{{ url_for('edit_role', UserID=user[0]) }}">
+                        <input type="hidden" name="original_role" value="{{ user[4] }}">
+                        <select name="new_role" class="form-control">
+                            <option value="" {% if user[4] == '' %}selected{% endif %}>Select Role</option>
+                            <option value="Client" {% if user[4] == 'Client' %}selected{% endif %}>Client</option>
+                            <option value="Agent" {% if user[4] == 'Agent' %}selected{% endif %}>Agent</option>
+                            <option value="Admin" {% if user[4] == 'Admin' %}selected{% endif %}>Admin</option>
+                            <option value="Manager" {% if user[4] == 'Manager' %}selected{% endif %}>Manager</option>
+                            <!-- Add more role options as needed -->
+                        </select>
+                    </td>
+                    <td>
+                        <div class="d-flex">
+                            <button type="submit" class="btn btn-success custom-button">
+                                <img src="/static/icons/bx-check.svg" alt="Save" class="icon-svg">
+                            </button>
+                            <div style="margin-left: 10px;"></div>
+                            <form method="POST" action="{{ url_for('delete_user', UserID=user[0]) }}">
+                                <button type="submit" class="btn btn-danger custom-button">
+                                    <img src="/static/icons/bx-trash.svg" alt="Delete" class="icon-svg">
+                                </button>
+                            </form>
+                        </div>
+                    </td>
+                </form>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>    
+    </div>
+    
+    <!-- Custom Pagination -->
+<div class="custom-pagination">
+    {% if users %}
+    <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center">
+
+            <!-- Previous Button -->
+            <li class="page-item {% if current_page == 1 %}disabled{% endif %}">
+                <a class="page-link" href="{{ url_for('admin_user_management', page=1, role=role, search_query=search_query) }}" tabindex="-1" aria-disabled="true">
+                    <i class="fas fa-chevron-left"></i> Previous
+                </a>
+            </li>
+
+            <!-- Page Numbers -->
+            {% for page_num in range(1, total_pages + 1) %}
+            <li class="page-item {% if page_num == current_page %}active{% endif %}">
+                <a class="page-link" href="{{ url_for('admin_user_management', page=page_num, role=role, search_query=search_query) }}">{{ page_num }}</a>
+            </li>
+            {% endfor %}
+
+            <!-- Next Button -->
+            <li class="page-item {% if current_page == total_pages %}disabled{% endif %}">
+                <a class="page-link" href="{{ url_for('admin_user_management', page=total_pages, role=role, search_query=search_query) }}">
+                    Next <i class="fas fa-chevron-right"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    {% else %}
+    <p>No results found.</p>
+    {% endif %}
+</div>
+
+    
+    <script>
+        function filterUsers(role) {
+            // Get all user rows
+            const userRows = document.querySelectorAll('.user-row');
+    
+            // Loop through user rows and toggle visibility based on the selected role
+            userRows.forEach((row) => {
+                const userRole = row.getAttribute('data-role');
+                if (userRole === role) {
+                    row.style.display = 'table-row'; // Show the row
+                } else {
+                    row.style.display = 'none'; // Hide the row
+                }
+            });
+        }
+    </script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

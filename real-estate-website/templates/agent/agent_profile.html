@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agent Profile</title>
+    <!-- Include Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+               body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            max-width: 800px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            margin: 0 auto;
+            margin-top: 20px;
+        }
+        .container h1 {
+            text-align: center;
+        }
+        .form-group label {
+            font-weight: bold;
+        }
+          /* Side Navbar */
+          .side-navbar {
+            background-color: #6ce1aa;
+            min-height: 100vh;
+            width: 250px; /* Adjust the width as needed */
+            position: relative;
+            top: 0;
+            left: 0;
+            padding-top: 5px;
+        }
+
+        .side-nav-link {
+            color: #fff;
+            padding: 15px 20px;
+            font-size: 18px;
+            transition: background-color 0.3s;
+        }
+
+        .side-nav-link:hover {
+            color: #205c98;
+        }
+
+        .side-nav-link.active {
+            background-color: #205c98;
+        }
+
+        .jumbotron {
+            background-color: #ffffff;
+            position: relative;
+        }
+
+        .jumbotron h1,
+        .jumbotron p {
+            color: #343a40;
+        }
+        .icon {
+            width: 24px; /* Set the width as needed */
+            height: 24px; /* Set the height as needed */
+            vertical-align: middle; /* Align the icon vertically with the text */
+        }
+    </style>
+</head>
+<body>
+
+
+    <div>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="custom-alert alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <script>
+                        setTimeout(function() {
+                            document.querySelector('.custom-alert').remove();
+                        }, 3000);
+                    </script>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Side Navbar -->
+            <nav class="col-md-2 side-navbar">
+                <ul class="nav flex-column">
+                    <!-- Add agent-specific navigation links here -->
+                    <li class="nav-item">
+                        <a class="nav-link side-nav-link" href="agent_dashboard">
+                            <img src="/static/icons/bxs-dashboard.svg" alt="Dashboard" class="icon mr-2"> Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link side-nav-link" href="agent_profile">
+                            <img src="/static/icons/bxs-user.svg" alt="Profile" class="icon mr-2"> Profile
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link side-nav-link" href="add_property">
+                            <img src="/static/icons/bxs-building-house.svg" alt="Properties" class="icon mr-2"> Properties
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link side-nav-link" href="agent_messages">
+                            <img src="/static/icons/bxs-chat.svg" alt="Messages" class="icon mr-2"> Messages
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link side-nav-link" href="/logout">
+                            <img src="/static/icons/bx-exit.svg" alt="Logout" class="icon mr-2"> Logout
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+            <div class="container">
+                <h1 class="text-center">Agent Profile</h1>
+                <!-- Agent profile information -->
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="agent-name">Name:</label>
+                            <input type="text" class="form-control" id="agent-name" value="{{ agent_data[1] }}" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="agent-email">Email:</label>
+                            <input type="email" class="form-control" id="agent-email" value="{{ agent_data[3] }}" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="agent-type">User Type:</label>
+                            <input type="text" class="form-control" id="agent-type" value="{{ agent_data[4] }}" readonly>
+                        </div>
+                        <!-- Add more profile fields as needed -->
+                        <div class="form-group">
+                            <label for="agent-dob">Date of Birth:</label>
+                            <input type="text" class="form-control" id="agent-dob" value="{{ agent_data[7] }}" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="agent-phone">Phone Number:</label>
+                            <input type="text" class="form-control" id="agent-phone" value="{{ agent_data[8] }}" readonly>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <!-- Add more fields on the right column -->
+                        <div class="form-group">
+                            <label for="agent-registration">Registration Date:</label>
+                            <input type="text" class="form-control" id="agent-registration" value="{{ agent_data[9] }}" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="agent-last-login">Last Login:</label>
+                            <input type="text" class="form-control" id="agent-last-login" value="{{ agent_data[10] }}" readonly>
+                        </div>
+                        <!-- You can add more fields here -->
+                    </div>
+                </div>
+            </div>
+            
+            
+
+    <!-- Include Bootstrap JavaScript (jQuery and Popper.js) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

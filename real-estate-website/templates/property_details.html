@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Property Details</title>
+    <!-- Include Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .property-details {
+            margin-top: 20px;
+        }
+        .property-image {
+            max-width: 100%;
+            height: auto;
+        }
+        .property-description {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="custom-alert alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <script>
+                        setTimeout(function() {
+                            document.querySelector('.custom-alert').remove();
+                        }, 3000);
+                    </script>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+    
+    <div class="container">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="card">
+              <div class="card-header">
+                <h1>{{ property_details[2] }}</h1>
+              </div>
+              <div class="card-body">
+                <img src="{{ property_details[12] }}" class="property_details-image" alt="{{ property_details[1] }}">
+                <p><strong></strong> {{ property_details[1] }}</p>
+                <p><strong>Type:</strong> {{ property_details[2] }}</p>
+                <p><strong>Province:</strong> {{ property_details[3] }}</p>
+                <p><strong>Price:</strong> ₱{{ property_details[4] }}</p>
+                <p><strong>Bedrooms:</strong> {{ property_details[5] }}</p>
+                <p><strong>Bathrooms:</strong> {{ property_details[6] }}</p>
+                <p><strong>Sqft:</strong> {{ property_details[7] }}</p>
+                <p><strong>Description:</strong> {{ property_details[8] }}</p>
+                <p><strong>Virtual Tour URL:</strong> <a href="{{ property_details[9] }}" target="_blank">{{ property_details[10] }}</a></p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card">
+              <div class="card-header">
+                <h1>Reserve Visit</h1>
+              </div>
+              <div class="card-body">
+                <form method="POST" action="{{ url_for('reserve_visit', property_id=property_details[0]) }}" class="form">
+                  <div class="form-group">
+                    <label for="client_name">Your Name:</label>
+                    <input type="text" id="client_name" name="client_name" class="form-control" required>
+                  </div>
+      
+                  <div class="form-group">
+                    <label for="client_email">Your Email:</label>
+                    <input type="email" id="client_email" name="client_email" class="form-control" required>
+                  </div>
+      
+                  <div class="form-group">
+                    <label for="client_number">Your Phone Number:</label>
+                    <input type="text" id="client_number" name="client_number" class="form-control" required>
+                  </div>
+      
+                  <div class="form-group">
+                    <label for="visit_datetime">Visit Date and Time:</label>
+                    <input type="datetime-local" id="visit_datetime" name="visit_datetime" class="form-control" required>
+                  </div>
+      
+                  <button type="submit" class="btn btn-primary">Reserve Visit</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    <!-- Include Bootstrap JS and jQuery just before the closing </body> tag -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

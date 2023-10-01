@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    
+    <!-- Add Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Add your custom CSS styles here -->
+    <style>
+        /* Custom CSS */
+        .navbar {
+            background-color: #42916c;
+            position: relative;
+        }
+
+        .navbar-dark .navbar-nav .nav-link {
+            color: #fff;
+        }
+
+        .navbar-dark .navbar-toggler-icon {
+            background-color: #fff;
+        }
+
+        footer {
+            background-color: #6ce1aa;
+            color: #fff;
+            text-align: center;
+            padding: 10px 0;
+        }
+
+        /* Side Navbar */
+        .side-navbar {
+            background-color: #6ce1aa;
+            min-height: 100vh;
+            width: 250px; /* Adjust the width as needed */
+            position: relative;
+            top: 0;
+            left: 0;
+            padding-top: 5px;
+        }
+
+        .side-nav-link {
+            color: #fff;
+            padding: 15px 20px;
+            font-size: 18px;
+            transition: background-color 0.3s;
+        }
+
+        .side-nav-link:hover {
+            color: #205c98;
+        }
+
+        .side-nav-link.active {
+            background-color: #205c98;
+        }
+
+        .jumbotron {
+            background-color: #ffffff;
+            position: relative;
+        }
+
+        .jumbotron h1,
+        .jumbotron p {
+            color: #343a40;
+        }
+        .icon {
+            width: 24px; /* Set the width as needed */
+            height: 24px; /* Set the height as needed */
+            vertical-align: middle; /* Align the icon vertically with the text */
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Flash Messages -->
+    <div>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="custom-alert alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <script>
+                        setTimeout(function() {
+                            document.querySelector('.custom-alert').remove();
+                        }, 3000);
+                    </script>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+    
+    <div class="container-fluid">
+        <div class="row">
+                    {% include '/includes/admin_sidebar.html' %}
+    
+    <!-- Content Area -->
+    <main role="main" class="col-md-10 ml-sm-auto col-lg-10 px-4">
+        <!-- Welcome Message -->
+        <div class="jumbotron">
+            <h1 class="display-4">Welcome, {{ admin_username }}!</h1>
+            <p class="lead">Welcome to the Admin Dashboard. You have access to various management features.</p>
+            <hr class="my-4">
+            
+            <!-- User Summary Section -->
+            <div class="container mt-4">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Total Users</h5>
+                                <p class="card-text">{{ total_users }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Active Users</h5>
+                                <p class="card-text">{{ active_users }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">New Users (Past Month)</h5>
+                                <p class="card-text">{{ new_users_past_month }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+        <!-- Add your content here -->
+    </div>
+
+    <!-- Include Bootstrap JavaScript (jQuery and Popper.js) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
