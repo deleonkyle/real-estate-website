@@ -1,0 +1,18 @@
+<!-- delete_schedule.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Include your CSS and JavaScript files if needed -->
+    <title>Delete Agent Schedule</title>
+</head>
+<body>
+    <h1>Delete Agent Schedule</h1>
+    {% include '/includes/flash_message.html' %}
+
+    <!-- Display schedule data for confirmation -->
+    <p>Are you sure you want to delete the schedule for {{ agent_schedule.agent_name }}?</p>
+    <form method="POST">
+        <button type="submit" class="btn btn-danger">Confirm Deletion</button>
+    </form>
+</body>
+</html>

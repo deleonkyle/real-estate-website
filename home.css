@@ -1,0 +1,262 @@
+/* Add background images to sections */
+.bg-image {
+    background-image: url('images/discover-house1.jpg');
+    background-size: cover;
+    background-position: center;
+    color: #fff; /* Adjust text color for better readability */
+  }
+  
+  /* Navbar styles */
+  .navbar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #fff261;
+    padding: 20px 0;
+  }
+  
+  .nav-links {
+    list-style: none;
+    display: flex;
+    align-items: center;
+  }
+  
+  .nav-links li {
+    margin: 0 15px;
+  }
+  
+  .nav-links a {
+    text-decoration: none;
+    color: #333;
+    font-size: 15px; /* Set font size */
+    font-family: 'Roboto', sans-serif;
+    text-transform: uppercase; /* Uppercase text */
+    transition: color 0.3s; /* Add smooth color transition */
+  }
+  
+  .nav-links a:hover {
+    color: #fff; /* Change color on hover */
+  }
+  
+  .logo-img {
+    width: 50px; /* Adjust the width as needed */
+    height: auto; /* Maintain aspect ratio */
+  }
+  .logo-link:hover .logo-img {
+    transform: scale(1.1); /* Increase the size of the logo on hover */
+  }  
+  
+  
+  /* Set background image for the welcome section */
+  #welcome {
+    background-image: url('images/discover-house1.jpg');
+    background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent overlay */
+    background-blend-mode: overlay;
+    background-size: cover; /* Change to cover */
+    background-position: center;
+    color: #fff;
+    padding: 150px 0; /* Add more vertical padding */
+    font-family: 'Roboto', sans-serif;
+    text-align: center; /* Center align text */
+  }
+  
+  /* Additional styling for the welcome content */
+  #welcome h2 {
+    font-size: 42px;
+    margin-bottom: 30px;
+    color: #fff261; /* Astra Realty orange color */
+  }
+  
+  #welcome p {
+    font-size: 20px;
+    line-height: 1.6;
+    max-width: 800px; /* Increased max-width */
+    margin: 0 auto;
+  }
+  
+  /* Your existing styles */
+  
+  #vision-mission {
+    background-size: cover;
+    background-position: center;
+    color: #fff; /* Font color */
+    font-family: 'Roboto', sans-serif;
+    text-align: center; /* Center align text */
+  }
+  
+  #vision-mission .overlay {
+    background-image: url('images/light-grey-bg.jpg');
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .vision-content,
+.mission-content {
+  text-align: justify;
+}
+  
+  .section-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-around; /* Adjust the spacing between image and text */
+  }
+  
+  .section-text {
+    flex: 1; /* Allow text to take up remaining space */
+    max-width: 60%; /* Limit text width */
+  }
+  
+  .section-image img {
+    width: 200px; /* Adjust the width as needed */
+    height: auto;
+  }
+  
+  .section-text h2 {
+    font-size: 32px; /* Font size */
+    margin-bottom: 20px;
+    color: #fff261; /* Astra Realty orange color */
+  }
+  
+  .section-text p {
+    font-size: 18px; /* Font size */
+    line-height: 1.6;
+    max-width: 800px; /* Increased max-width */
+    margin: 0 auto;
+    color: black;
+  }
+  .float-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+  }
+  
+  .calculator-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50px;
+    height: 50px;
+    background-color: #fff261;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 24px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  }
+  
+  .popup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  }
+  
+  button {
+    padding: 10px 20px;
+    background-color: #fff261;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #bbb691;
+  }
+  
+  .close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 18px;
+    cursor: pointer;
+    color: #333; /* Adjust color */
+  }
+  
+  #calculate-button {
+    padding: 10px 20px;
+    background-color: #fff261; /* Green color */
+    color: white;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    transition: background-color 0.3s; /* Add smooth transition */
+  }
+  
+  #calculate-button:hover {
+    background-color: #b1ba98; /* Darker green on hover */
+  }
+  
+  #result {
+    margin-top: 20px;
+    font-weight: bold;
+  }
+  
+  .popup-content {
+    max-width: 90%;
+    margin: 0 auto;
+    text-align: center;
+  }
+  
+  #loan-form {
+    text-align: left;
+    margin-top: 20px;
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Two equal columns */
+    gap: 15px; /* Gap between columns */
+  }
+  
+  #loan-form label {
+    display: block;
+    margin-bottom: 8px;
+  }
+  
+  #loan-form input,
+  #loan-form select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  #loan-form button {
+    grid-column: span 2; /* Make the button span both columns */
+    padding: 10px 20px;
+    background-color: #fff261;
+    color: white;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+  } 
+  .shadowed-image {
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.3); /* Adjust the shadow properties as needed */
+  }
+  /* Style for the "Read More" link */
+.read-more {
+    font-size: 20px;
+    color: #fff261; /* Change to your desired color */
+    text-decoration: none;
+    transition: color 0.3s; /* Add smooth color transition */
+  }
+  
+  .read-more:hover {
+    color: #b1ba98; /* Change to a different color on hover */
+  }
+  
+  
+
+
+  @media screen and (max-width: 600px) {
+    .popup-content {
+      padding: 20px;
+    }
+    
+    #loan-form {
+      grid-template-columns: 1fr; /* Single column layout on smaller screens */
+    }
+  }

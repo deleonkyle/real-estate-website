@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Property Search</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container mx-auto">
+        <a class="navbar-brand" href="homepage.html">
+          <img src="images/astra-realty-logo.png" width="70" height="50" alt="Astra Realty Logo">
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item active">
+              <a class="nav-link" href="home.html">Welcome</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#offerings">Offerings</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#why-choose">Why Choose</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#testimonials">Testimonials</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#contact">Contact</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#news">News</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+  <main class="container mt-5">
+    <form id="property-search-form" action="/search" method="get" class="shadow p-4">
+      <div class="form-group">
+        <label for="province">Province:</label>
+        <select name="province" id="province" class="form-control">
+          <option value="province1">Province 1</option>
+          <option value="province2">Province 2</option>
+          <!-- Add more options for provinces -->
+        </select>
+      </div>
+      
+      <div class="form-group">
+        <label for="house-type">House Type:</label>
+        <select name="house-type" id="house-type" class="form-control">
+          <option value="apartment">Apartment</option>
+          <option value="house">House</option>
+          <!-- Add more options for house types -->
+        </select>
+      </div>
+      
+      <div class="form-group">
+        <label for="min-price">Min Price:</label>
+        <select name="min-price" id="min-price" class="form-control">
+          <option value="">Select Min Price</option>
+          <option value="$0">$0</option>
+          <option value="$50,000">$50,000</option>
+          <option value="$100,000">$100,000</option>
+          <!-- Add more price options -->
+        </select>
+      </div>
+      
+      <div class="form-group">
+        <label for="max-price">Max Price:</label>
+        <select name="max-price" id="max-price" class="form-control">
+          <option value="">Select Max Price</option>
+          <option value="$200,000">$200,000</option>
+          <option value="$300,000">$300,000</option>
+          <option value="$400,000">$400,000</option>
+          <!-- Add more price options -->
+        </select>
+      </div>
+      
+      <button type="submit" class="btn btn-primary btn-block">Search</button>
+    </form>
+  </main>
+
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

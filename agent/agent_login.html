@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agent Login</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+       body {
+            background: #000;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            text-align: center;
+        }
+
+        .card {
+            width: 100%;
+            max-width: 400px;
+            background: #fff;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            display: inline-block;
+        }
+
+        .forms-inputs {
+            position: relative;
+        }
+
+        .forms-inputs span {
+            position: absolute;
+            top: -18px;
+            left: 10px;
+            background-color: #fff;
+            padding: 5px 10px;
+            font-size: 15px;
+        }
+
+        .forms-inputs input {
+            height: 50px;
+            width: 100%;
+            border: 2px solid #eee;
+            padding: 10px;
+            margin-bottom: 15px; /* Add this to create space between fields */
+            box-sizing: border-box;
+        }
+
+        .forms-inputs input:focus {
+            outline: none;
+            border: 2px solid #000;
+        }
+
+        .btn {
+            height: 50px;
+            width: 100%;
+            background: #000;
+            color: #fff;
+            border: none;
+        }
+
+        .btn:focus {
+            outline: none;
+        }
+
+        .success-data {
+            display: none;
+        }
+
+        .bxs-badge-check {
+            font-size: 90px;
+        }
+    </style>
+</head>
+<body>
+    <body>
+        {% include '/includes/flash_message.html' %}
+        <div class="container d-flex align-items-center justify-content-center h-100">
+            <!-- Center the form using Bootstrap -->
+            <div class="card">
+                <form method="POST" action="/agent/agent_login">
+                    <div class="form-data">
+                        <div class="forms-inputs mb-4">
+                            <span>Email or username</span>
+                            <input type="text" name="email_or_username" id="email_or_username" class="form-control" required>
+                        </div>
+                        <div class="forms-inputs mb-4">
+                            <span>Password</span>
+                            <input type="password" name="password" id="password" class="form-control" required>
+                        </div>                        
+                        <div class="mb-3">
+                            <button type="submit" class="btn btn-dark btn-block">Login</button>
+                            <!-- Use btn-block class to make the button full width -->
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <!-- Include Bootstrap JavaScript -->
+    </body>
+    </html>

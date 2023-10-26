@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>List of Houses</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        /* Custom CSS for additional styling */
+        body {
+            background-color: #f8f9fa;
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .house-card {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .house-image {
+            width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+        .btn-view {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+        }
+        .pagination {
+            justify-content: center;
+        }
+        .navbar {
+            background-color: #343a40;
+        }
+        .navbar-dark .navbar-nav .nav-link {
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+
+  <!-- Flash Messages -->
+  {% include '/includes/flash_message.html' %}
+
+  {% include '/includes/navbar.html' %}
+
+    <div class="container">
+        <h1>List of Houses</h1>
+        <div class="row">
+            {% for house in houses %}
+            <div class="col-md-6">
+                <div class="house-card">
+                    <img src="{{ url_for('static', filename='uploads/' + house[13]) }}" class="house-image" alt="{{ house.name }}">
+                    <h2>{{ house[1] }}</h2>
+                    <p><strong></strong> {{ house[11] }}</p>
+                    <p><strong>Type:</strong> {{ house[2] }}</p>
+                    <p><strong>Location:</strong> {{ house[3] }}</p>
+                    <p><strong>Price:</strong>₱{{ "{:,.2f}".format(house[4]) }}</p>
+                    <a href="{{ url_for('property_details', property_id=house[0]) }}" class="btn btn-view btn-block">View Details</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    
+    <!-- Pagination -->
+    <nav aria-label="Page navigation">
+      <ul class="pagination">
+          <li class="page-item {% if current_page == 1 %}disabled{% endif %}">
+              <a class="page-link" href="{{ url_for('house_list', page=1) }}" tabindex="-1" aria-disabled="true">Previous</a>
+          </li>
+          {% for page_num in range(1, total_pages + 1) %}
+              <li class="page-item {% if page_num == current_page %}active{% endif %}">
+                  <a class="page-link" href="{{ url_for('house_list', page=page_num) }}">{{ page_num }}</a>
+              </li>
+          {% endfor %}
+          <li class="page-item {% if current_page == total_pages %}disabled{% endif %}">
+              <a class="page-link" href="{{ url_for('house_list', page=total_pages) }}">Next</a>
+          </li>
+      </ul>
+    </nav>
+
+    <!-- Bootstrap JS and jQuery (Required for Bootstrap components) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

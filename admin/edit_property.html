@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Property</title>
+    <link rel="stylesheet" href="/static/assets/admin.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        /* Custom CSS for additional styling */
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            max-width: 800px;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px auto;
+        }
+        .container h1 {
+            text-align: center;
+        }
+        .form-group label {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    {% include '/includes/flash_message.html' %}
+
+    <!-- Include the admin sidebar -->
+    {% include '/includes/admin_sidebar.html' %}
+    <div class="custom-content">
+        <div class="container mt-1">
+            <h1 class="text-center">Edit Property</h1>
+            <form method="POST" enctype="multipart/form-data">
+                <div class="row">
+                    <div class="col-md-6">
+                        <!-- Property form fields (left column) -->
+                        <div class="form-group">
+                            <label for="name">Property Name:</label>
+                            <input type="text" class="form-control" name="name" value="{{ property[1] }}" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="thumbnail">Property Thumbnail (Profile Image):</label>
+                            <input type="file" class="form-control-file" name="thumbnail" >
+                        </div>                        
+                        <div class="form-group">
+                            <label for="type">Property Type:</label>
+                            <input type="text" class="form-control" name="type" value="{{ property[2] }}" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="price">Price (₱):</label>
+                            <input type="number" class="form-control" name="price" value="{{ property[4] }}" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="beds">Bedrooms:</label>
+                            <input type="number" class="form-control" name="beds" value="{{ property[5] }}" required>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <!-- Property form fields (right column) -->
+                        <div class="form-group">
+                            <label for="province">Province:</label>
+                            <input type="text" class="form-control" name="province" value="{{ property[3] }}" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="toilet_bath">Toilet and Bath:</label>
+                            <input type="number" class="form-control" name="toilet_bath" value="{{ property[6] }}" id="toilet_bath" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="lot_area">Lot Area:</label>
+                            <input type="float" class="form-control" name="lot_area" value="{{ property[7] }}" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="floor_area">Floor Area:</label>
+                            <input type="float" class="form-control" name="floor_area" value="{{ property[8] }}" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="image">Property Images (Multiple):</label>
+                            <input type="file" class="form-control-file" name="image" multiple>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="location">Location:</label>
+                    <select class="form-control" name="location" required>
+                        <option value="Prime Location" {% if property[9] == 'Prime Location' %}selected{% endif %}>Prime Location</option>
+                        <option value="Regular Location" {% if property[9] == 'Regular Location' %}selected{% endif %}>Regular Location</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="description">Description:</label>
+                    <textarea class="form-control" name="description" rows="4" required>{{ property[10] }}</textarea>
+                </div>
+                <div class="form-group">
+                    <label for="virtual_tour_images">Virtual Tour Images (Multiple):</label>
+                    <input type="file" class="form-control-file" name="virtual_tour_images" multiple>
+                </div>
+                <!-- End of Property fields -->
+                <div class="text-center mt-3">
+                    <button type="submit" class="btn btn-primary">Update Property</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

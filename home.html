@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Astra Realty - Your Dream Home Awaits</title>
+    <link rel="stylesheet" href="/static/assets/style.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="/static/assets/style.css">
+</head>
+<body>
+  {% include '/includes/flash_message.html' %}
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container">
+    <!-- Astra Realty Logo -->
+    <a class="navbar-brand" href="index">
+      <img src="/static/images/astra-realty-logo.png" alt="Astra Realty Logo" class="logo-img">
+    </a>
+    <!-- Navbar Toggler for Mobile -->
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <!-- Navbar Links -->
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="home">Discover</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Buyer's Guide
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="#buying-tips">Buying Tips</a>
+            <a class="dropdown-item" href="loancal">Loan Calculator</a>
+            <!-- Add more dropdown items as needed -->
+          </div>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="v_tour">Virtual Tour</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="house_list">Explore Homes</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#contact">Contact</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#news">News</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+<section id="welcome" class="container text-center my-5">
+  <h2>Welcome to Astra Realty</h2>
+  <p class="lead">Discover your perfect living space with Astra Realty. We specialize in connecting you with exceptional properties that cater to your unique lifestyle. Whether you're looking for a cozy apartment, a family-friendly house, or a luxurious villa, we have the ideal options for you.</p>
+  <a href="login" class="btn btn-primary mx-2">Login</a>
+  <a href="register" class="btn btn-success mx-2">Register</a>
+</section>
+
+<section id="vision-mission" class="container-fluid py-5">
+  <div class="row">
+    <div class="col-lg-6">
+      <img src="/static/images/house2.jpg" alt="Vision and Mission Photo" class="img-fluid shadowed-image">
+    </div>
+    <div class="col-lg-6">
+      <div class="vision-content">
+        <h2>Our Vision</h2>
+        <p>At Astra Realty Corp, our vision is to redefine the real estate experience by consistently exceeding expectations and setting new industry standards. We envision a future where every individual's dream of finding their perfect home becomes a reality. Through innovation, unwavering commitment, and a deep understanding of our clients' aspirations, we aim to revolutionize the way people discover, invest, and thrive in properties. Our ultimate goal is to leave an indelible mark on the lives we touch, by connecting people with not just properties, but with their dreams.</p>
+      </div>
+      <div class="mission-content mt-4">
+        <h2>Our Mission</h2>
+        <p>At Astra Realty Corp is to empower and guide our clients through their property journeys with unparalleled expertise and personalized care. We are dedicated to delivering exceptional value by curating a diverse portfolio of properties that cater to unique lifestyles and preferences. Our mission is to foster lasting relationships, built on integrity, professionalism, and trust. We commit ourselves to continuously innovate and adapt to evolving market dynamics, ensuring that our clients are equipped with the insights and resources needed to make informed decisions. By embracing challenges and embracing opportunities, we endeavor to shape the future of real estate with a legacy of excellence and impact.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Your additional content here -->
+
+<footer class="text-center py-4">
+  <p>&copy; 2023 Astra Realty. All rights reserved.</p>
+</footer>
+</body>
+</html>

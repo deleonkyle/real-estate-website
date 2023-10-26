@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agent Dashboard</title>
+    
+    <!-- Add Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/assets/agent.css">
+    <style>
+        .jumbotron {
+            background-color: #ffffff;
+        }
+
+        .jumbotron h1,
+        .jumbotron p {
+            color: #343a40;
+        }
+        .icon {
+            width: 24px; /* Set the width as needed */
+            height: 24px; /* Set the height as needed */
+            vertical-align: middle; /* Align the icon vertically with the text */
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">Agent Dashboard</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <!-- Add agent-specific navigation links here -->
+                <li class="nav-item">
+                    <a class="nav-link" href="agent_dashboard">
+                        <img src="/static/icons/bxs-dashboard.svg" alt="Dashboard" class="icon mr-2"> Dashboard
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="agent_profile">
+                        <img src="/static/icons/bxs-user.svg" alt="Profile" class="icon mr-2"> Profile
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link side-nav-link" href="agent_reservations">
+                        <img src="/static/icons/bxs-calendar.svg" alt="Notifications" class="icon mr-2"> Reservations
+                    </a>
+                </li>                
+                <li class="nav-item">
+                    <a class="nav-link" href="/agent/agent_logout">
+                        <img src="/static/icons/bx-exit.svg" alt="Logout" class="icon mr-2"> Logout
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    </body>
+    </html>

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Reservations</title>
+    <!-- Include Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="/static/assets/admin.css">
+    <style>
+        .custom-table {
+            border: none;
+        }
+        .custom-table th,
+        .custom-table td {
+            border: none;
+            vertical-align: middle;
+            padding: 10px;
+        }
+        .custom-table thead {
+            background-color: #f2f2f2;
+        }
+        .custom-button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            padding: 6px 12px;
+            cursor: pointer;
+        }
+        .custom-button:hover {
+            background-color: #0056b3;
+        }
+        .custom-checkbox-input {
+            margin: 0;
+        }
+        .custom-checkbox-label {
+            display: flex;
+            align-items: center;
+        }
+        .custom-checkbox-label label {
+            margin-bottom: 0;
+            margin-left: 5px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Flash Messages -->
+    {% include '/includes/flash_message.html' %}
+    
+    {% include '/includes/admin_sidebar.html' %}
+
+    <div class="custom-content">
+        <div class="container">
+            <h2>Reservation Management</h2>
+            <p>Manage reservations:</p>
+
+            <!-- Search Form -->
+            <form method="GET" action="{{ url_for('admin_reservation') }}" class="mb-3">
+                <div class="input-group custom-search-bar">
+                    <input type="text" class="form-control form-control-sm custom-search-input" name="search_query" placeholder="Search...">
+                    <div class="input-group-append">
+                        <button type="submit" class="btn btn-custom btn-sm">
+                            <img src="/static/icons/bx-search-alt-2.svg" alt="Search" class="icon mr-2">
+                        </button>
+                    </div>
+                </div>
+            </form>
+
+            <!-- Property Visits Table -->
+            <h2>Property Visits</h2>
+            <div class="table-responsive">
+                <table class="table custom-table">
+                    <thead>
+                        <tr>
+                            <th>Visit</th>
+                            <th>Property</th>
+                            <th>Client Name</th>
+                            <th>Client Email</th>
+                            <th>Contact</th>
+                            <th>Visit Date</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for visit in property_visits %}
+                        <tr>
+                            <td>{{ visit[0] }}</td> <!-- VisitID -->
+                            <td>{{ visit[1] }}</td> <!-- PropertyID -->
+                            <td>{{ visit[2] }}</td> <!-- ClientName -->
+                            <td>{{ visit[3] }}</td> <!-- ClientEmail -->
+                            <td>{{ visit[4] }}</td> <!-- ClientNumber -->
+                            <td>{{ visit[5] }}</td> <!-- VisitDate -->
+                            <td>
+                                <form method="POST" action="{{ url_for('edit_visit_status', VisitID=visit[0]) }}">
+                                    <input type="hidden" name="original_status" value="{{ visit[6] }}">
+                                    <select name="status" class="form-control">
+                                        <option value="" {% if visit[6] == '' %}selected{% endif %}>Select Status</option>
+                                        <option value="Scheduled" {% if visit[6] == 'Scheduled' %}selected{% endif %}>Scheduled</option>
+                                        <option value="Completed" {% if visit[6] == 'Completed' %}selected{% endif %}>Completed</option>
+                                        <option value="Canceled" {% if visit[6] == 'Canceled' %}selected{% endif %}>Canceled</option>
+                                    </select>
+                            </td>
+                            <td>
+                                <button type="submit" class="custom-button">
+                                    Save
+                                </button>
+                            </td>
+                        </tr>
+                        </form>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Pagination -->
+            <div class="pagination-container">
+                {% if property_visits %}
+                <nav aria-label="Page navigation">
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item {% if current_page == 1 %}disabled{% endif %}">
+                            <a class="page-link" href="{{ url_for('admin_reservation', page=1) }}" tabindex="-1" aria-disabled="true">Previous</a>
+                        </li>
+                        {% for page_num in range(1, total_pages + 1) %}
+                        <li class="page-item {% if page_num == current_page %}active{% endif %}">
+                            <a class="page-link" href="{{ url_for('admin_reservation', page=page_num) }}">{{ page_num }}</a>
+                        </li>
+                        {% endfor %}
+                        <li class="page-item {% if current_page == total_pages %}disabled{% endif %}">
+                            <a class="page-link" href="{{ url_for('admin_reservation', page=total_pages) }}">Next</a>
+                        </li>
+                    </ul>
+                </nav>
+                {% else %}
+                <p>No results found.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Include Bootstrap JS just before the closing </body> tag -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.5.0/dist/js/bootstrap.min.js"></script>
+</body>
+</html>
