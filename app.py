@@ -191,7 +191,7 @@ def admin_delete_slot(slot_id):
     return redirect(url_for('admin_properties_slots'))
 
 
-@app.route('/index')
+@app.route('/')
 def index():
     # Establish a database connection
     connection = get_db_connection()
