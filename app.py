@@ -16,7 +16,7 @@ app = Flask(__name__)
 app.secret_key = 'b1fd2e52903ba3d848b4ca718c9e2d2f08a94fa7d8721aa1'
 
 # Database configuration
-db_host = '35.224.210.211'  # Use the external IP address
+db_host = '35.224.242.204'  # Use the external IP address
 db_user = 'root'  # Use the username you've created
 db_password = 'root'  # Use the password you've set
 db_name = 'astra'  # Your database name
