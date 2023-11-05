@@ -23,8 +23,22 @@ db_name = 'astra'
 app.config['UPLOAD_FOLDER'] = 'static/uploads'
 
 def get_db_connection():
-    return pymysql.connect(host=db_host, user=db_user, password=db_password, database=db_name)
+    # Update these variables with your Google Cloud SQL connection details
+    db_host = 'skilful-display-404217:us-central1:root'  # Replace with your Google Cloud SQL connection name
+    db_user = 'root'          # Replace with your Google Cloud SQL user
+    db_password = 'root'  # Replace with your Google Cloud SQL user's password
+    db_name = 'astra'          # Replace with your Google Cloud SQL database name
 
+    # Establish a connection to Google Cloud SQL
+    connection = pymysql.connect(
+        host=db_host,
+        user=db_user,
+        password=db_password,
+        db=db_name,
+        cursorclass=pymysql.cursors.DictCursor  # Optional: Fetch results as dictionaries
+    )
+
+    return connection
 @app.route('/admin/admin_add_slots', methods=['GET'])
 def admin_input_slots():
     # Fetch property listings from the 'properties' table, including the location
