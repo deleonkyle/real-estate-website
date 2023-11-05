@@ -24,7 +24,8 @@ db_name = 'astra'  # Your database name
 app.config['UPLOAD_FOLDER'] = 'static/uploads'
 
 def get_db_connection():
-    return pymysql.connect(host=db_host, user=db_user, password=db_password, database=db_name)
+    connection = pymysql.connect(host='35.224.210.211', user='root', password='root', database='astra')
+    return connection
 
 @app.route('/admin/admin_add_slots', methods=['GET'])
 def admin_input_slots():
