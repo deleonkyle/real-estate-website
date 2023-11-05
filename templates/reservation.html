@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Property Reservation</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    {% include '/includes/flash_message.html' %}
+    <div class="container mt-4">
+        <div id="property-visit-section">
+            <h2>Property Visit</h2>
+            <p>Fill out the information to schedule a property visit.</p>
+            <form method="POST" action="{{ url_for('reservation', property_id=property_id, slot_id=slot_id) }}">
+                <div class="row">
+                    <!-- Left Column -->
+                    <div class="col-md-6">
+                        <!-- Property Visit Form Fields -->
+                        <div class="form-group">
+                            <input type="hidden" id="slot_id" name="slot_id" value="{{ slot_id }}">
+                            <label for="parcel">Parcel:</label>
+                            <input type="text" id="parcel" name="parcel" class="form-control" value="{{ slot_details[0] }}" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="block">Block:</label>
+                            <input type="text" id="block" name="block" class="form-control" value="{{ slot_details[1] }}" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="slot">Slot:</label>
+                            <input type="text" id="slot" name="slot" class="form-control" value="{{ slot_details[2] }}" readonly>
+                        </div>
+                    </div>
+                    <!-- Right Column -->
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="client_name">Your Name:</label>
+                            <input type="text" id="client_name" name="client_name" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="client_email">Your Email:</label>
+                            <input type="email" id="client_email" name="client_email" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="client_number">Your Phone Number:</label>
+                            <input type="text" id="client_number" name="client_number" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="visit_date">Visit Date:</label>
+                            <input type="date" id="visit_date" name="visit_date" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="visit_time">Visit Time:</label>
+                            <input type="time" id="visit_time" name="visit_time" class="form-control" required>
+                        </div>
+                <button type="submit" class="btn btn-primary">Reserve Visit</button>
+            </form>
+        </div>
+    </div>
+    
+        <hr>
+        <button onclick="toggleForm('reservation-form-section')" class="btn btn-secondary">Next: Reservation Form</button>
+    </div>
+
+    <div id="reservation-form-section" style="display: none;">
+        <h2>Reservation Form</h2>
+        <p>Fill out the reservation form to complete your reservation.</p>
+        <form method="POST" action="/input_data">
+            <div class="card">
+                <div class="card-header">
+                    Personal Information
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <label for="lastname">Last Name:</label>
+                        <input type="text" name="lastname" class="form-control" id="lastname" required>
+                    </div>
+    
+                    <div class="form-group">
+                        <label for="firstname">First Name:</label>
+                        <input type="text" name="firstname" class="form-control" id="firstname" required>
+                    </div>
+    
+                    <div class="form-group">
+                        <label for="middlename">Middle Name:</label>
+                        <input type="text" name="middlename" class="form-control" id="middlename" required>
+                    </div>
+    
+                    <div class="form-group">
+                        <label for="birthdate">Birthdate:</label>
+                        <input type="date" name="birthdate" class="form-control" id="birthdate">
+                    </div>
+                
+                    <div class="form-group">
+                        <label for="birthplace">Place of Birth:</label>
+                        <input type="text" name="birthplace" class="form-control" id="birthplace">
+                    </div>
+                
+                    <div class="form-group">
+                        <label for="age">Age:</label>
+                        <input type="number" name="age" class="form-control" id="age">
+                    </div>
+                
+                    <div class="form-group">
+                        <label for="gender">Gender:</label>
+                        <input type="text" name="gender" class="form-control" id="gender">
+                    </div>
+                
+                    <div class="form-group">
+                        <label for="nationality">Nationality:</label>
+                        <input type="text" name="nationality" class="form-control" id="nationality">
+                    </div>
+                
+                    <div class="form-group">
+                        <label for="dependents">Number of Dependents:</label>
+                        <input type="number" name="dependents" class="form-control" id="dependents">
+                    </div>
+                
+                    <div class="form-group">
+                        <label for="tin">TIN (Tax Identification Number):</label>
+                        <input type="text" name="tin" class="form-control" id="tin">
+                    </div>
+                
+                    <div class="form-group">
+                        <label for="sss">SSS (Social Security System) Number:</label>
+                        <input type="text" name="sss" class="form-control" id="sss">
+                    </div>
+                
+                    <div class="form-group">
+                        <label for="ctc">CTC (Community Tax Certificate) Number:</label>
+                        <input type="text" name="ctc" class="form-control" id="ctc">
+                    </div>
+                
+                    <div class="form-group">
+                        <label for="dateplaceissued">Date/Place Issued:</label>
+                        <input type="text" name="dateplaceissued" class="form-control" id="dateplaceissued">
+                    </div>
+                
+                    <div class="form-group">
+                        <label>Civil Status:</label><br>
+                        <div class="form-check">
+                            <input type="radio" name="civilstatus" class="form-check-input" id="civilstatus_single" value="Y">
+                            <label class="form-check-label" for="civilstatus_single">Single</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="radio" name="civilstatus" class="form-check-input" id="civilstatus_married" value="Y">
+                            <label class="form-check-label" for="civilstatus_married">Married</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="radio" name="civilstatus" class="form-check-input" id="civilstatus_widowed" value="Y">
+                            <label class="form-check-label" for="civilstatus_widowed">Widowed</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="radio" name="civilstatus" class="form-check-input" id="civilstatus_others" value="Y">
+                            <label class="form-check-label" for="civilstatus_others">Others</label>
+                        </div>
+                </div>
+            </div>
+            <div class="card mt-3">
+                <div class="card-header">
+                    Address and Contact Information
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <label for="number_street">Number, Street:</label>
+                        <input type="text" name="number_street" class="form-control" id="number_street" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="district_town">District/Town:</label>
+                        <input type="text" name="district_town" class="form-control" id="district_town" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="municipality_city">Municipality/City:</label>
+                        <input type="text" name="municipality_city" class="form-control" id="municipality_city" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="state_country">State, Country:</label>
+                        <input type="text" name="state_country" class="form-control" id="state_country" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="zip_code">Zip Code:</label>
+                        <input type="text" name="zip_code" class="form-control" id="zip_code" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="landline_phone">Landline & Phone Number:</label>
+                        <input type="text" name="landline_phone" class="form-control" id="landline_phone" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">Email Address:</label>
+                        <input type="email" name="email" class="form-control" id="email" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="facebook_account">Facebook Account:</label>
+                        <input type="text" name="facebook_account" class="form-control" id="facebook_account">
+                    </div>
+                </div>
+            </div>
+            <div class="card mt-3">
+                <div class="card-header">
+                    Employment and Income Information
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <label for="employer_name">Employer/Business Name:</label>
+                        <input type="text" name="employer_name" class="form-control" id="employer_name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="office_address">Office/Business Address:</label>
+                        <input type="text" name="office_address" class="form-control" id="office_address" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="division_department">Division/Department:</label>
+                        <input type="text" name="division_department" class="form-control" id="division_department" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="position">Position:</label>
+                        <input type="text" name="position" class="form-control" id="position" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="years_in_employment">Years in Employment/Business:</label>
+                        <input type="number" name="years_in_employment" class="form-control" id="years_in_employment" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="telephone_fax">Telephone/Fax No.:</label>
+                        <input type="text" name="telephone_fax" class="form-control" id="telephone_fax" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="basic_salary">Basic Salary per Month:</label>
+                        <input type="number" name="basic_salary" class="form-control" id="basic_salary" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="allowance_remuneration">Allowance/Other Remuneration per Month:</label>
+                        <input type="number" name="allowance_remuneration" class="form-control" id="allowance_remuneration" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="gross_income">Gross Income per Month:</label>
+                        <input type="number" name="gross_income" class="form-control" id="gross_income" required>
+                    </div>
+                </div>
+            </div>
+            <div class="card mt-3">
+                <div class="card-header">
+                    Spouse Information
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <label for="spouse_birthdate">Spouse's Birth Date:</label>
+                        <input type="date" name="spouse_birthdate" class="form-control" id="spouse_birthdate">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="spouse_birthplace">Spouse's Birthplace:</label>
+                        <input type="text" name="spouse_birthplace" class="form-control" id="spouse_birthplace">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="spouse_age">Spouse's Age:</label>
+                        <input type="number" name="spouse_age" class="form-control" id="spouse_age">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="spouse_lastname">Spouse's Last Name:</label>
+                        <input type="text" name="spouse_lastname" class="form-control" id="spouse_lastname">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="spouse_firstname">Spouse's First Name:</label>
+                        <input type="text" name="spouse_firstname" class="form-control" id="spouse_firstname">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="spouse_middle_name">Spouse's Middle Name:</label>
+                        <input type="text" name="spouse_middle_name" class="form-control" id="spouse_middle_name">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Employment Status: </label><br>
+                        <div class="form-check">
+                            <input type="radio" name="employment_status" class="form-check-input" id="employment_status_private" value="PRIVATE">
+                            <label class="form-check-label" for="employment_status_private">Private</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="radio" name="employment_status" class="form-check-input" id="employment_status_govt" value="GOV'T">
+                            <label class="form-check-label" for="employment_status_govt">Government</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="radio" name="employment_status" class="form-check-input" id="employment_status_overseas" value="OVERSEAS">
+                            <label class="form-check-label" for="employment_status_overseas">Overseas</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="radio" name="employment_status" class="form-check-input" id="employment_status_self_employed" value="SELF-EMPLOYED">
+                            <label class="form-check-label" for="employment_status_self_employed">Self-Employed</label>
+                        </div>
+                    </div>
+                    
+                    
+                    <div class="form-group">
+                        <label for="spouse_employer_name">Spouse's Employer/Business Name:</label>
+                        <input type="text" name="spouse_employer_name" class="form-control" id="spouse_employer_name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="spouse_office_address">Spouse's Office/Business Address:</label>
+                        <input type="text" name="spouse_office_address" class="form-control" id="spouse_office_address" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="spouse_division_department">Spouse's Division/Department:</label>
+                        <input type="text" name="spouse_division_department" class="form-control" id="spouse_division_department" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="spouse_position">Spouse's Position:</label>
+                        <input type="text" name="spouse_position" class="form-control" id="spouse_position" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="spouse_years_in_employment">Spouse's Years in Employment/Business:</label>
+                        <input type="number" name="spouse_years_in_employment" class="form-control" id="spouse_years_in_employment" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="spouse_telephone_fax">Spouse's Telephone/Fax No.:</label>
+                        <input type="text" name="spouse_telephone_fax" class="form-control" id="spouse_telephone_fax" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="spouse_basic_salary">Spouse's Basic Salary per Month:</label>
+                        <input type="number" name="spouse_basic_salary" class="form-control" id="spouse_basic_salary" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="spouse_allowance_remuneration">Spouse's Allowance/Other Remuneration per Month:</label>
+                        <input type="number" name="spouse_allowance_remuneration" class="form-control" id="spouse_allowance_remuneration" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="spouse_gross_income">Spouse's Gross Income per Month:</label>
+                        <input type="number" name="spouse_gross_income" class="form-control" id="spouse_gross_income" required>
+                    </div>
+                </div>
+            </div>
+            <div class="card mt-3">
+                <div class="card-header">
+                    Character References
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <label for="reference1_name">Character Reference 1 Name:</label>
+                        <input type="text" name="reference1_name" class="form-control" id="reference1_name">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="reference1_relationship">Relationship with Reference 1:</label>
+                        <input type="text" name="reference1_relationship" class="form-control" id="reference1_relationship">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="reference1_contact_no">Contact No. for Reference 1:</label>
+                        <input type="text" name="reference1_contact_no" class="form-control" id="reference1_contact_no">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="reference2_name">Character Reference 2 Name:</label>
+                        <input type="text" name="reference2_name" class="form-control" id="reference2_name">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="reference2_relationship">Relationship with Reference 2:</label>
+                        <input type="text" name="reference2_relationship" class="form-control" id="reference2_relationship">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="reference2_contact_no">Contact No. for Reference 2:</label>
+                        <input type="text" name="reference2_contact_no" class="form-control" id="reference2_contact_no">
+                    </div>
+            
+                    <div class="form-group">
+                        <label for="reference3_name">Character Reference 3 Name:</label>
+                        <input type="text" name="reference3_name" class="form-control" id="reference2_name">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="reference3_relationship">Relationship with Reference 3:</label>
+                        <input type="text" name="reference3_relationship" class="form-control" id="reference3_relationship">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="reference3_contact_no">Contact No. for Reference 3:</label>
+                        <input type="text" name="reference3_contact_no" class="form-control" id="reference3_contact_no">
+                    </div>
+                </div>
+            </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Generate PDF</button>
+        </form>
+        <hr>
+        <button onclick="toggleForm('property-visit-section')" class="btn btn-secondary">Back to Property Visit</button>
+    </div>
+</div>
+
+<script>
+    function toggleForm(formId) {
+        const propertyVisitSection = document.getElementById('property-visit-section');
+        const reservationFormSection = document.getElementById('reservation-form-section');
+
+        if (formId === 'property-visit-section') {
+            propertyVisitSection.style.display = 'block';
+            reservationFormSection.style.display = 'none';
+        } else {
+            propertyVisitSection.style.display = 'none';
+            reservationFormSection.style.display = 'block';
+        }
+    }
+</script>
+</body>
+</html>

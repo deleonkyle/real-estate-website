@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Astra Realty</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+   body {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      background-color: #ffffff;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    .social-icon {
+      font-size: 24px;
+      margin: 0 10px;
+      color: #fff;
+      text-decoration: none;
+    }
+
+    .social-icon:hover {
+      color: #36b2d1;
+    }
+    main {
+      flex-grow: 1;
+    }
+
+    .custom-button {
+            background-color: #3cfd52;
+            color: white;
+        }
+
+    #services {
+      background-color: transparent;
+      padding: 60px 40px; /* Adjust the padding to increase the margin */
+      margin: 20px 0; /* Add margin to separate the section from other content */
+    }
+
+    #services h2 {
+      color: #ffffff;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .service-card {
+      border: none;
+      background-color: transparent;
+      border-radius: 10px;
+    }
+
+    .service-card h5 {
+      color: #ffffff;
+    }
+    .card-text{
+      font-family:'Poppins', sans-serif !important ;
+      color: #000000;
+    }
+
+    .service-img {
+        height: 320px;
+        object-fit: cover;
+    }
+        .map-container {
+            max-width: 100%;
+            margin: 0 auto;
+        }
+        .search-section {
+        background-image: url('/static/images/bd1c4a6b-3752-4d8c-a094-3e2a9799fea7.jpg');
+        background-size: cover;
+        background-position: center;
+        color: #ffffff;
+        height: 120vh;
+        font-family: Verdana, Geneva, Tahoma, sans-serif;
+    
+}
+.search-form-container {
+  background-color: rgba(70, 69, 69, 0.648);
+  padding: 20px; /* Adjust the padding for the form container */
+  border-radius: 10px; /* Adjust the border radius if desired */
+  margin-top: 350px;
+}
+
+
+    .services-section {
+      background-image: url('/static/images/pic5.png');
+      padding: 60px 0;
+    }
+
+    .featured-properties-section {
+      background-color: #e2e2e2;
+      padding: 60px 0;
+    }
+
+    .map-section {
+      background-color: #ffffffbc;
+      padding: 60px 0;
+    }
+    .custom-button {
+      background-color: #3cfd52;
+      color: white;
+    }
+
+    .custom-button:hover {
+      background-color: #29c345;
+    }
+    .property-card {
+    background-color: transparent; 
+    border: none; 
+}
+
+
+  </style>
+</head>
+<body>
+
+  {% include '/includes/navbar.html' %}
+
+
+  <section class="search-section text-center">
+    <div class="container mt-5">
+      <div class="row justify-content-center align-items-center">
+        <div class="col-md-6">
+          <div class="search-form-container">
+            <form id="property-search-form" action="/search" method="post">
+              <div class="form-group">
+                <label for="province">Province:</label>
+                <select name="province" id="province" class="form-control" placeholder="Select a Province">
+                  <option value="">-- Any Province --</option>
+                  <option value="Batangas">Batangas</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="price">Price:</label>
+                <input type="number" name="price" id="price" class="form-control" placeholder="Enter max price">
+              </div>
+              <div class="form-group">
+                <label for="location">Location:</label>
+                <select name="location" id="location" class="form-control" placeholder="Select a Location">
+                  <option value="">-- Any Location --</option>
+                  <option value="Prime Location">Prime Location</option>
+                  <option value="Regular Location">Regular Location</option>
+                  <!-- Add more options for locations -->
+                </select>
+              </div>
+              <button type="submit" class="btn custom-button btn-block">Search</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+    <section class="featured-properties-section text-center">
+      <div class="container my-5">
+          <h2>Featured Properties</h2>
+          <p>Explore our featured properties available for purchase.</p>
+          
+          <div class="row">
+              {% for property in featured_properties %}
+              <div class="col-md-4">
+                  <div class="card mb-4 property-card">
+                      <img src="{{ url_for('static', filename='uploads/' +  property[11]) }}" class="card-img-top property-img" alt="{{ property[1] }}">
+                      <div class="card-body">
+                          <h5 class="card-title">{{ property[1] }}</h5>
+                          <h5 class="card-title">{{ property[9] }}</h5>
+                          <p class="card-text">{{ property[5] }} Bedrooms | {{ property[6] }} Bathrooms | {{ property.description }}</p>
+                          <p class="price">₱{{ "{:,.2f}".format(property[4]) }}</p>
+                          <a href="#" class="btn custom-button btn-block">View Details</a>
+                      </div>
+                  </div>
+              </div>
+              {% endfor %}
+          </div>
+      </div>
+  </section>
+  
+    <section class="map-section text-center">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-6">
+            <img src="/static/uploads/350684354_1978501789162665_619711158069035108_n.jpg" alt="Image" class="img-fluid">
+            <figcaption>A map of Mercedes Homes in Soro-Soro Ilaya, Batangas City.</figcaption>
+          </div>
+          <div class="col-md-6">
+            <div class="map-container">
+              <iframe
+                title="Mercedes Homes Soro-Soro Ilaya - Batangas City Location Map"
+                src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d242.14731574293972!2d121.08893323840773!3d13.817585808165559!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sph!4v1695723793947!5m2!1sen!2sph"
+                width="100%"
+                height="450"
+                style="border:0;"
+                allowfullscreen=""
+                loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade"
+              >
+              </iframe>
+              <p class="map-caption">This map shows the location of Mercedes Homes in Soro-Soro Ilaya, Batangas City. You can click and drag the map to explore the surrounding area, or use the zoom control to see more or less detail.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    
+  
+
+    <section class="services-section text-center">
+      <div class="container my-5">
+    <h2>Our Services</h2>
+    <p>We offer a wide range of services to help you find and sell your dream home.</p>
+    
+    <div class="row">
+        <!-- Service 1 -->
+        <div class="col-md-4">
+            <div class="card mb-4 service-card">
+                <img src="/static/images/3.jpeg" class="card-img-top service-img" alt="Service 1">
+                <div class="card-body">
+                    <h5 class="card-title">Property Buying</h5>
+                    <p class="card-text">Discover a variety of properties for sale in different provinces.</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Service 2 -->
+        <div class="col-md-4">
+            <div class="card mb-4 service-card">
+                <img src="/static/images/2.jpeg" class="card-img-top service-img" alt="Service 2">
+                <div class="card-body">
+                    <h5 class="card-title">Virtual Tours</h5>
+                    <p class="card-text">Explore homes through virtual tours from the comfort of your home.</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Service 3 -->
+        <div class="col-md-4">
+            <div class="card mb-4 service-card">
+                <img src="/static/images/1.jpeg" class="card-img-top service-img" alt="Service 3">
+                <div class="card-body">
+                    <h5 class="card-title">Expert Advice</h5>
+                    <p class="card-text">Get expert advice on buying, selling, and financing your property.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+
+
+
+
+</main>
+
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com"></script>
+</body>
+</html>

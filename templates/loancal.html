@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Loan Calculator</title>
+  <!-- Include Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    /* Custom CSS for the result section */
+    .result-section {
+      background-color: #f4f4f4; /* Background color */
+      padding: 20px; /* Add some padding for spacing */
+      border-radius: 10px; /* Rounded corners for the result section */
+      background-color: blanchedalmond;
+    }
+    /* Custom CSS for the form container */
+    .form-container {
+      padding: 20px;
+      margin-top: 20px;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2 class="mt-4">Loan Calculator</h2>
+    <div class="row">
+      <div class="col-md-6 form-container">
+        <form method="POST">
+          <div class="form-group">
+            <label for="loan_amount">Loan Amount (₱):</label>
+            <input type="number" class="form-control" id="loan_amount" name="loan_amount" required>
+          </div>
+          <div class="form-group">
+            <label for="down_payment">Down Payment (₱):</label>
+            <input type="number" class="form-control" id="down_payment" name="down_payment" required>
+          </div>
+          <div class="form-group">
+            <label for="interest_rate">Annual Interest Rate (%):</label>
+            <input type="number" step="0.01" class="form-control" id="interest_rate" name="interest_rate" required>
+          </div>          
+          <div class="form-group">
+            <label for="loan_term">Loan Term (years):</label>
+            <input type="number" class="form-control" id="loan_term" name="loan_term" required>
+          </div>          
+          <button type="submit" class="btn btn-primary">Calculate</button>
+        </form>
+      </div>
+
+      <!-- Display the calculated results here -->
+      <div class="col-md-6">
+        {% if loan_amount is defined and down_payment is defined and interest_rate is defined and loan_term is defined %}
+        <div class="result-section mt-4">
+            <h3>Loan Details</h3>
+            <p><strong>Loan Amount:</strong> ₱{{ loan_amount }}</p>
+            <p><strong>Down Payment:</strong> ₱{{ down_payment }}</p>
+            <p><strong>Annual Interest Rate:</strong> {{ interest_rate }}%</p>
+            <p><strong>Loan Term (years):</strong> {{ loan_term }}</p>
+            <h3>Calculated Results</h3>
+            <p><strong>Loan Amount (without down payment):</strong> ₱{{ loan_without_down_payment }}</p>
+            <p><strong>Monthly Payment:</strong> ₱{{ monthly_payment | round(2) }}</p>
+            <p><strong>Total Payment:</strong> ₱{{ total_payment | round(2) }}</p>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ASTRA Realty: {{ property_details[1] }}</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightbox2@2.11.3/dist/css/lightbox.min.css">
+<script src="https://cdn.jsdelivr.net/npm/lightbox2@2.11.3/dist/js/lightbox-plus-jquery.min.js"></script>
+
+</head>
+<style>
+
+    .container {
+        background-color: #fff;
+        padding: 20px;
+        margin: 20px;
+    }
+
+    .carousel-inner img {
+        max-height: 400px;
+        object-fit: cover;
+    }
+
+    .list-group-item {
+        border: none;
+        padding: 10px;
+    }
+
+    .card {
+        border: none; /* Remove the default border */
+        transition: transform 0.3s, box-shadow 0.3s; /* Add box-shadow transition */
+        margin: 10px;
+    }
+
+    .card:hover {
+        transform: scale(1.05);
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.2); /* Add shadow on hover */
+    }
+
+    body {
+        background-color: #fff;
+        padding: 20px;
+        color: #333;
+        font-family: 'Roboto', sans-serif;
+    }
+
+    .property-description {
+            padding: 20px;
+            background-color: #fff;
+        }
+
+        .property-description h1 {
+            text-align: center;
+            font-size: 2rem;
+            color: #40bf62; /* Blue color for the title */
+        }
+
+        .property-description p {
+            text-align: justify;
+            font-size: 1rem;
+            line-height: 1.6;
+            color: #333; /* Dark gray color for the text */
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 10px;
+        }
+        .property-description li {
+            text-align: justify;
+            color: #333; /* Dark gray color for the text */
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 10px;
+        }
+
+   .property-details h1 {
+        font-size: 2rem;
+        color: #40bf62; /* Green color for the title */
+        text-align: center;
+        margin-bottom: 10px;
+    }
+
+    .property-details h4 {
+        font-size: 1.2rem;
+        color: #333; /* Text color for the subtitle */
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    .btn {
+        transition: background-color 0.3s ease, color 0.3s ease;
+        background-color: #40bf62;
+        color: #fff;
+    }
+
+    .btn:hover {
+        background-color: #0f4e2a;
+        color: #fff;
+    }
+
+    .footer {
+        color: #333;
+    }
+    .property-details img.property_details-image {
+        max-width: 100%; /* Ensure the image fits within the column */
+        max-height: 300px; /* Set the maximum height as needed */
+        display: block; /* Remove any extra spacing around the image */
+        margin: 0 auto; /* Center the image horizontally */
+    }
+    .custom-back-button {
+        background-color: #40bf62; /* Change the background color */
+        color: #fff; /* Change the text color */
+        border: none; /* Remove the default button border */
+        padding: 10px 20px; /* Adjust padding as needed */
+        border-radius: 5px; /* Add rounded corners */
+        cursor: pointer; /* Show a pointer cursor on hover */
+        transition: background-color 0.3s ease, color 0.3s ease; /* Add transition for hover effect */
+    }
+
+    /* Change button style on hover */
+    .custom-back-button:hover {
+        background-color: #0f4e2a; /* Change background color on hover */
+        color: #fff; /* Change text color on hover */
+    }
+    .custom-pagination {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 16px;
+    color: #333;
+}
+
+
+.custom-pagination .pagination-list {
+    list-style: none;
+    display: inline-flex;
+    align-items: center;
+}
+
+.custom-pagination .pagination-list li {
+    margin: 0 5px;
+}
+
+.custom-pagination .pagination-list li a {
+    text-decoration: none;
+    color: #40bf62;
+    padding: 5px 10px;
+    border: 1px solid #40bf62;
+    border-radius: 5px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.custom-pagination .pagination-list li a:hover {
+    background-color: #40bf62;
+    color: #fff;
+}
+
+.custom-pagination .pagination-list .active a {
+    background-color: #40bf62;
+    color: #fff;
+    pointer-events: none;
+}
+/* Existing styles */
+
+#showMoreButton {
+    display: inline-block; /* Make the "See more photos" link inline */
+    margin-top: 10px; /* Add space below the images */
+    text-align: center;
+    color: #007bff;
+    cursor: pointer;
+}
+
+/* Add a margin to separate the "See more photos" link from the photos */
+#showMoreButton {
+    margin-left: 5px;
+}
+
+/* Flexbox to align the photos in a row-like manner */
+#imageGallery {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+}
+
+/* Add spacing between images */
+#imageGallery a {
+    display: inline-block;
+    margin: 5px;
+}
+
+#imageGallery img {
+    max-width: 150px; /* Increase the maximum width for the images */
+    max-height: 150px; /* Increase the maximum height for the images */
+}
+
+</style>
+<body>
+   
+    <button id="backButton" class="btn custom-back-button" onclick="goBack()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-left-fill" viewBox="0 0 16 16">
+            <path d="m3.86 8.753 5.482 4.796c.646.566 1.658.106 1.658-.753V3.204a1 1 0 0 0-1.659-.753l-5.48 4.796a1 1 0 0 0 0 1.506z"/>
+          </svg>
+          Back</button>
+
+
+<!-- Property Details Section -->
+<div class="property-details">
+    <h1 class="text-center"> {{ property_details[1] }} </h1>
+    <h4 class="text-center"> {{ property_details[9] }} </h4>
+    </div>
+    <div class="property-details">
+    <div class="row">
+        <div class="col-md-6">
+            <img src="{{ url_for('static', filename='uploads/' + property_details[11]) }}" class="property_details-image" alt="{{ property_details.name }}">
+        </div>
+        <div class="col-md-6">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="property-details-info">
+                    <div class="property-detail-group">
+                        <img src="/static/icons/bxs-building-house.svg">
+                        <p>{{ property_details[2] }}</p>
+                    </div>
+                    <div class="property-detail-group">
+                        <img src="/static/icons/bxs-map-pin.svg" alt="Location">
+                        <p>{{ property_details[3] }}</p>
+                    </div>
+                    <div class="property-detail-group">
+                        <img src="/static/icons/bxs-purchase-tag.svg" alt="TCP">
+                        <p>₱{{ "{:,.2f}".format(property_details[4]) }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="property-details-info">
+                    <div class="property-detail-group">
+                        <img src="/static/icons/bxs-bed.svg" alt="Bedrooms">
+                        <p>{{ property_details[5] }} Bedrooms</p>
+                    </div>
+                    <div class="property-detail-group">
+                        <img src="/static/icons/bxs-bath.svg" alt="Toilet and Bath">
+                        <p>{{ property_details[6] }} Toilet and Bath</p>
+                    </div>
+                    <div class="property-detail-group">
+                        <img src="/static/icons/bxs-area.svg" alt="Lot Area">
+                        <p>{{ property_details[7] }} sq.m</p>
+                    </div>
+                    <div class="property-detail-group">
+                        <img src="/static/icons/bxs-area.svg" alt="Floor Area">
+                        <p>{{ property_details[8] }} sq.m</p>
+                    </div>
+                </div>
+            </div>
+        </div>        
+    </div>
+</div>
+</div>
+
+<div class="container" style="max-width: 800px; margin: 0 auto;">
+    <div id="imageGallery">
+        {% if property_images %}
+            {% set maxVisibleImages = 8 %}
+            <div id="imageContainer"> <!-- New container to group images and links -->
+                {% for i in range(property_images|length) %}
+                    <a href="{{ url_for('static', filename='uploads/' + property_images[i]) }}" data-lightbox="property-gallery" {% if i >= maxVisibleImages %}style="display: none;"{% endif %}>
+                        <img src="{{ url_for('static', filename='uploads/' + property_images[i]) }}" alt="Image {{ i }}">
+                    </a>
+                {% endfor %}
+            </div>
+            <a href="javascript:void(0);" id="showMoreButton" onclick="toggleImagesVisibility(true)">See more</a>
+            <a href="javascript:void(0);" id="seeLessButton" style="display: none;" onclick="toggleImagesVisibility(false)">See less</a>
+        {% endif %}
+    </div>
+</div>
+
+
+
+<div class="property-description">
+    <p>Discover Your Ideal Home in Mercedes Homes Soro-Soro, Batangas City</p>
+    <p>Mercedes Homes Soro-Soro, located in the heart of Batangas City, offers a unique opportunity to experience modern living in a vibrant and growing community. With easy access to major commercial and industrial establishments, educational institutions, healthcare facilities, and more, this residential enclave provides the perfect blend of comfort and convenience.</p>
+    <h1>Key Features:</h1>
+    <ul>
+        <li>Multipurpose Clubhouse: A space for social gatherings and events.</li>
+        <li>Basketball Court: Enjoy sports and recreational activities close to home.</li>
+        <li>Parks and Playgrounds: Perfect for outdoor fun and relaxation.</li>
+    </ul>
+    <p>Mercedes Homes Soro-Soro aims to create a thriving town within Batangas City, complete with its own business and recreational areas. The community is thoughtfully designed to enhance your quality of life.</p>
+    <h1>Community Amenities and Infrastructure:</h1>
+    <ul>
+        <li>Landscape Entrance Gate: Welcoming residents and guests.</li>
+        <li>Concrete Major and Minor Roads: Ensuring smooth and accessible transportation within the community.</li>
+        <li>12-Meter Wide Main Road: Enhancing mobility and connectivity.</li>
+        <li>Centralized Water Distribution System: Reliable water supply for every home.</li>
+        <li>Meralco Power Lines: Access to electricity for your convenience.</li>
+        <li>Centralized Sewer System: Modern sanitation for a cleaner environment.</li>
+        <li>Underground Drainage System: Efficient drainage to prevent flooding.</li>
+        <li>Secured Perimeter Fence: Ensuring safety and security for all residents.</li>
+    </ul>
+    <p>Mercedes Homes Soro-Soro is more than just a residential development; it's a lifestyle that promotes community engagement, relaxation, and a bright future. Join us and be part of this growing neighborhood.</p>
+</div>
+
+    
+    <h2 class="text-center mt-4">Available Slots</h2>
+    <div class="row">
+        {% if available_slots %}
+            <!-- Filter Options -->
+            <div class="col-md-3">
+                <div class="mb-3">
+                    <label for="parcelFilter" class="form-label">Filter by Parcel:</label>
+                    <select id="parcelFilter" class="form-select">
+                        <option value="">All Parcels</option>
+                        <!-- Populate options dynamically based on your data -->
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="mb-3">
+                    <label for="blockFilter" class="form-label">Filter by Block:</label>
+                    <select id="blockFilter" class="form-select">
+                        <option value="">All Blocks</option>
+                        <!-- Populate options dynamically based on your data -->
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="mb-3">
+                    <label for="typeFilter" class="form-label">Filter by Slot Type:</label>
+                    <select id="typeFilter" class="form-select">
+                        <option value="">All Slot Types</option>
+                        <!-- Populate options dynamically based on your data -->
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="mb-3">
+                    <label for="slotFilter" class="form-label">Search Slots:</label>
+                    <input type="text" id="slotFilter" class="form-control" placeholder="Search slots by any keyword">
+                </div>
+            </div>
+        {% else %}
+            <p class="col-md-12">Error: Available slots data is missing.</p>
+        {% endif %}
+    </div>
+
+    <div class="custom-pagination">
+        <ul class="pagination-list">
+        </ul>
+    </div>
+    
+
+    <!-- Available Slots Cards -->
+    <div class="row" id="slotContainer">
+        <!-- Display only the first 6 slots initially -->
+        {% for slot in available_slots %}
+            <div class="col-md-4">
+                <div class="card mb-4" data-parcel="{{ slot[3] }}" data-block="{{ slot[4] }}" data-type="{{ slot[1] }}">
+                    <div class="card-body">
+                        <strong>Parcel:</strong> {{ slot[3] }}<br>
+                        <strong>Block:</strong> {{ slot[4] }}<br>
+                        <strong>Slot:</strong> {{ slot[5] }}<br>
+                        <strong>Slot Type:</strong> {{ slot[1] }}<br>
+                        {% if user_is_logged_in %}
+                        <a href="{{ url_for('reservation', property_id=property_id, slot_id=slot[0]) }}" class="btn btn-primary btn-lg mt-3">Reserve Slot</a>
+{% else %}
+    <a href="{{ url_for('login') }}" class="btn btn-primary btn-lg mt-3">Login to Reserve</a>
+    <p>Please log in or register to reserve a slot.</p>
+{% endif %}
+</div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <footer class="bg-dark text-dark py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-sm-12">
+                    <h5>Contact Us</h5>
+                    <p>If you have any questions or need assistance, feel free to contact us:</p>
+                    <ul>
+                        <li>Email: <a href="mailto:info@example.com">info@example.com</a></li>
+                        <li>Phone: +1 (123) 456-7890</li>
+                    </ul>
+                </div>
+                <div class="col-md-6 col-sm-12">
+                    <h5>Connect with Us</h5>
+                    <p>Follow us on social media for updates and news:</p>
+                    <ul class="list-inline">
+                        <li class="list-inline-item"><a href="#" class="text-light">Facebook</a></li>
+                        <li class="list-inline-item"><a href="#" class="text-light">Twitter</a></li>
+                        <li class="list-inline-item"><a href="#" class="text-light">Instagram</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+
+    <script>
+        const parcelFilter = document.getElementById("parcelFilter");
+        const blockFilter = document.getElementById("blockFilter");
+        const typeFilter = document.getElementById("typeFilter");
+        const slotFilter = document.getElementById("slotFilter");
+    
+        const cards = document.querySelectorAll(".card");
+    
+        function applyFilters() {
+            const selectedParcel = parcelFilter.value;
+            const selectedBlock = blockFilter.value;
+            const selectedType = typeFilter.value;
+            const filterText = slotFilter.value.toLowerCase();
+    
+            cards.forEach(card => {
+                const parcel = card.dataset.parcel;
+                const block = card.dataset.block;
+                const slotType = card.dataset.type;
+                const text = card.innerText.toLowerCase();
+    
+                const parcelMatch = !selectedParcel || parcel === selectedParcel;
+                const blockMatch = !selectedBlock || block === selectedBlock;
+                const typeMatch = !selectedType || slotType === selectedType;
+                const textMatch = text.includes(filterText);
+    
+                if (parcelMatch && blockMatch && typeMatch && textMatch) {
+                    card.style.display = "block";
+                } else {
+                    card.style.display = "none";
+                }
+            });
+        }
+    
+        parcelFilter.addEventListener("change", applyFilters);
+        blockFilter.addEventListener("change", applyFilters);
+        typeFilter.addEventListener("change", applyFilters);
+        slotFilter.addEventListener("input", applyFilters);
+    
+        // Initial filter application
+        applyFilters();
+
+        function goBack() {
+        window.history.back();
+    }
+    // Variables for pagination
+const slotsPerPage = 6; // Number of slots to display per page
+const slotContainer = document.getElementById("slotContainer");
+const slots = document.querySelectorAll(".card");
+
+// Function to update displayed slots based on the selected page
+function updateDisplayedSlots(page) {
+    const startIndex = (page - 1) * slotsPerPage;
+    const endIndex = page * slotsPerPage;
+    slots.forEach((slot, index) => {
+        if (index >= startIndex && index < endIndex) {
+            slot.style.display = "block";
+        } else {
+            slot.style.display = "none";
+        }
+    });
+}
+
+// Function to create pagination controls
+function createPaginationControls() {
+    const numPages = Math.ceil(slots.length / slotsPerPage);
+    const paginationList = document.querySelector(".pagination-list");
+
+    for (let i = 1; i <= numPages; i++) {
+        const listItem = document.createElement("li");
+        const pageLink = document.createElement("a");
+        pageLink.href = "#";
+        pageLink.textContent = i;
+        pageLink.addEventListener("click", (event) => {
+            event.preventDefault();
+            const selectedPage = parseInt(event.target.textContent);
+            updateDisplayedSlots(selectedPage);
+        });
+
+        listItem.appendChild(pageLink);
+        paginationList.appendChild(listItem);
+    }
+}
+
+// Initialize pagination
+createPaginationControls();
+updateDisplayedSlots(1); // Initially display the first page
+
+
+const maxVisibleImages = 8; // Set your desired maximum number of visible images
+    const showMoreButton = document.getElementById("showMoreButton");
+    const seeLessButton = document.getElementById("seeLessButton");
+    const images = document.querySelectorAll('#imageGallery a');
+
+    // Function to toggle the visibility of images
+    function toggleImagesVisibility(seeMore) {
+        for (let i = 0; i < images.length; i++) {
+            if (seeMore || i < maxVisibleImages) {
+                images[i].style.display = "inline-block";
+            } else {
+                images[i].style.display = "none";
+            }
+        }
+        showMoreButton.style.display = seeMore ? "none" : "inline";
+        seeLessButton.style.display = seeMore ? "inline" : "none";
+    }
+
+    // Initial setup
+    toggleImagesVisibility(false); // Show initial images
+
+    // Click event for "See more" link
+    showMoreButton.addEventListener("click", function () {
+        toggleImagesVisibility(true);
+    });
+
+    // Click event for "See less" link
+    seeLessButton.addEventListener("click", function () {
+        toggleImagesVisibility(false);
+    });
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

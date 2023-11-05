@@ -1,0 +1,138 @@
+body {
+    background: #f9fafb;
+}
+.reservation-list {
+  margin-top: 20px;
+}
+
+.icon {
+width: 24px;
+height: 24px;
+vertical-align: middle;
+margin-right: 10px; /* Add some space between the icon and text */
+}
+
+.custom-button {
+  border: none;
+  border-radius: 25px; 
+  padding: 6px 12px; 
+  transition: background-color 0.3s, transform 0.2s;
+  margin-right: 6px;
+  margin-bottom: 6px;
+}
+
+/* Hover effect */
+.custom-button:hover {
+  transform: scale(1.05); /* Scale the button slightly on hover */
+}
+
+/* Icon styles */
+.icon-svg {
+  width: 24px; /* Adjust the icon width as needed */
+  height: 24px; /* Adjust the icon height as needed */
+  vertical-align: middle; /* Align the icon vertically with the text */
+  margin-right: 5px; /* Add some space between the icon and text */
+}
+
+/* Pagination styles */
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px; /* Add margin to separate from table */
+}
+
+.pagination {
+  margin: 0; /* Remove default margin */
+}
+
+/* Custom styles for the search bar */
+.custom-search-bar {
+border: 2px solid #42916c;
+border-radius: 6px;
+overflow: hidden;
+background-color: #fff;
+box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+width: 200px;
+}
+
+.custom-search-input {
+border: none;
+border-radius: 0;
+padding: 6px;
+font-size: 17px;
+outline: none;
+box-shadow: none;
+width: 120px; 
+}
+
+.btn-custom {
+background-color: #ffffff; /* Replace with your desired color code */
+color: #fff; /* Text color */
+border: none;
+border-radius: 0;
+padding: 6px 12px;
+}
+
+.btn-custom:hover {
+background-color: #8d8785; /* Change background color on hover */
+}
+/* Make the table responsive on smaller screens */
+.custom-table {
+  background-color: #fff;
+  max-width: 100%; /* Make the table fit within the container */
+}
+.custom-table,
+    .custom-table th,
+    .custom-table td {
+        border: none;
+    }
+   /* Ensure the table is not wider than the screen */
+      @media (min-width: 768px) {
+          .custom-table {
+              overflow-x: auto;
+          }
+      }
+      .custom-table {
+        overflow-x: auto; /* Add horizontal scroll on overflow */
+    }
+
+    /* Add some margin to the content to avoid overlapping with the sidebar */
+    .content {
+        margin-left: 260px; /* Adjust the margin to match the sidebar's width */
+    }
+    .custom-content {
+      margin-left: 260px;
+      padding: 15px;
+      display: inline-block; /* Add this to make content appear beside the sidebar */
+  }
+/* Custom Flash Message Styles */
+.custom-alert {
+  margin-bottom: 10px;
+}
+
+.custom-alert-success {
+  background-color: #4CAF50;
+  color: #fff;
+}
+
+.custom-alert-info {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.custom-alert-warning {
+  background-color: #ffc107;
+  color: #333;
+}
+
+.custom-alert-danger {
+  background-color: #dc3545;
+  color: #fff;
+}
+.house-image {
+  max-width: 100px; /* Adjust the maximum width as needed */
+  max-height: 100px; /* Adjust the maximum height as needed */
+}
+.action-buttons{
+  justify-content: space-between;
+}

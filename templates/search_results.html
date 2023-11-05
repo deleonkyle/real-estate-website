@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Astra Realty - Search Results</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .property {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .property-image {
+            max-height: 200px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+        .property-name a {
+            text-decoration: none;
+            color: #40bf62;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+        .property-name a:hover {
+            color: #0f4e2a;
+        }
+    </style>
+</head>
+<body>
+    <!-- Flash Messages -->
+    {% include '/includes/flash_message.html' %}
+    
+    <div class="container">
+      <h2>Search Results</h2>
+      <div class="property-list">
+          {% if properties %}
+              {% for property in properties %}
+                  <div class="property">
+                      <div class="row">
+                          <div class="col-md-4 d-flex align-items-center"> <!-- Added 'd-flex' and 'align-items-center' -->
+                              <img src="{{ url_for('static', filename='uploads/' + property[11]) if property[11] else url_for('static', filename='default_placeholder_image.jpg') }}" class="property-image" alt="{{ property.name }}">
+                          </div>
+                          <div class="col-md-8">
+                              <h2 class="property-name"><a href="{{ url_for('property_details', property_id=property[0]) }}">{{ property[1] }}</a></h2>
+                              <h4>{{ property[9] }}</h4>
+                              <p><strong>Type:</strong> {{ property[2] }}</p>
+                              <p><strong>Province:</strong> {{ property[3] }}</p>
+                              <p><strong>Price:</strong> ₱{{ "{:,.2f}".format(property[4]) }}</p>
+                              <p><strong>Bedrooms:</strong> {{ property[5] }}</p>
+                              <p><strong>Bathrooms:</strong> {{ property[6] }}</p>
+                              <p><strong>Lot Area:</strong> {{ property[7] }} sq. m.</p>
+                              <p><strong>Floor Area:</strong> {{ property[8] }} sq. m.</p>
+                          </div>
+                      </div>
+                  </div>
+              {% endfor %}
+          {% else %}
+              <p>No results found for your search criteria.</p>
+          {% endif %}
+      </div>
+  </div>
+
+    <!-- Bootstrap JS and jQuery (Required for Bootstrap components) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/5.3.2/js/bootstrap.min.js"></script>
+</body>
+</html>

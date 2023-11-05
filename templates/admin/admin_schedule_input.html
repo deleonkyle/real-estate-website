@@ -1,0 +1,111 @@
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Admin Schedule Input</title>
+        <link href="/static/assets/admin.css" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+        <style>
+            /* Custom CSS for form styling */
+            .custom-form {
+                max-width: 400px;
+                margin: 0 auto;
+            }
+            .custom-form label {
+                font-weight: bold;
+            }
+            .custom-form select {
+                width: 100%;
+            }
+        </style>
+    </head>
+    <body>
+        {% include '/includes/flash_message.html' %}
+        {% include '/includes/admin_sidebar.html' %}
+        <div class="custom-content">
+            <div class="container mt-5">
+                <h1>Admin Schedule Input</h1>
+
+                <!-- Flash Messages: You can include your flash messages here -->
+
+                <form method="POST" class="custom-form">
+                    <div class="form-group">
+                        <label for="AgentID">Agent:</label>
+                        <select class="form-control" id="AgentID" name="AgentID" required>
+                            {% for agent_id, agent_name, realty_affiliation in agents %}
+                            <option value="{{ agent_id|int }}">{{ agent_name }} ({{ realty_affiliation }})</option>
+                            {% endfor %}
+                        </select>          
+                    </div>                
+                    <div class="form-group">
+                        <label for="DayOfMonth">Day of the Month:</label>
+                        <select class="form-control" id="DayOfMonth" name="DayOfMonth" required>
+                            {% for day in range(1, 32) %}
+                                <option value="{{ day }}">{{ day }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>                    
+                    <div class="form-group">
+                        <label for="Month">Month:</label>
+                        <select class="form-control" name="Month" required>
+                            <option value="January">January</option>
+                            <option value="February">February</option>
+                            <option value="March">March</option>
+                            <option value="April">April</option>
+                            <option value="May">May</option>
+                            <option value="June">June</option>
+                            <option value="July">July</option>
+                            <option value="August">August</option>
+                            <option value="September">September</option>
+                            <option value="October">October</option>
+                            <option value="November">November</option>
+                            <option value="December">December</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="Year">Year:</label>
+                        <select class="form-control" name="Year" required>
+                            <option value="2023">2023</option>
+                            <option value="2024">2024</option>
+                            <option value="2025">2025</option>
+                            <option value="2026">2026</option>
+                            <option value="2027">2027</option>
+                            <option value="2028">2028</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="StartTime">Start Time:</label>
+                        <select class="form-control" id="StartTime" name="StartTime" required>
+                            <!-- Generate time options in 24-hour format -->
+                            {% for hour in range(8, 18, 2) %}
+                            {% set display_hour = hour if hour <= 12 else hour - 12 %}
+                            {% set time = "%02d:00:00" % display_hour %}
+                            <option value="{{ time }}">{{ time }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="EndTime">End Time:</label>
+                        <select class="form-control" id="EndTime" name="EndTime" required>
+                            <!-- Generate time options in 24-hour format -->
+                            {% for hour in range(10, 20, 2) %}
+                            {% set display_hour = hour if hour <= 12 else hour - 12 %}
+                            {% set time = "%02d:00:00" % display_hour %}
+                            <option value="{{ time }}">{{ time }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Include Bootstrap JS and Popper.js script links here -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    </body>
+    </html>

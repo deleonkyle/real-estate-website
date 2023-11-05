@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agent Dashboard</title>
+    
+    <!-- Add Bootstrap 5 CSS (Link to Bootstrap 5 via a CDN) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/agent.css') }}">
+    <style>
+        .jumbotron {
+            background-color: #ffffff;
+        }
+
+        .jumbotron h1,
+        .jumbotron p {
+            color: #343a40;
+        }
+        .icon {
+            width: 24px; /* Set the width as needed */
+            height: 24px; /* Set the height as needed */
+            vertical-align: middle; /* Align the icon vertically with the text */
+        }
+    </style>
+</head>
+<body>
+
+    {% include 'includes/flash_message.html' %}
+    
+    {% include 'includes/agent_sidebar.html' %}
+
+    
+    <!-- Content Area -->
+    <main role="main" class="container">
+        <!-- Welcome Message -->
+        <div class="jumbotron mt-4">
+            <h1 class="display-4">Welcome, {{ agent_username }}!</h1>
+            <p class="lead">Welcome to the Agent Dashboard. You have access to various agent-specific features.</p>
+            <hr class="my-4">
+    
+            <!-- Agent Summary Section -->
+            <div class="row">
+                <div class="col-md-4 col-12 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Total Properties</h5>
+                            <p class="card-text">{{ total_properties }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-12 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Messages</h5>
+                            <p class="card-text">{{ unread_messages }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-12 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Upcoming Appointments</h5>
+                            <p class="card-text">{{ upcoming_appointments }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Recent Reservations Section -->
+            <h2 class="display-5 mt-4">Recent Reservations</h2>
+            <ul class="list-group">
+                {% for reservation in recent_reservations %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <div>
+                            <h5>{{ reservation[0] }} ({{ reservation[1] }})</h5>
+                            <p>{{ reservation[2] }}</p>
+                        </div>
+                        <span class="badge
+                            {% if reservation[3] == 'Scheduled' %}
+                                bg-primary
+                            {% elif reservation[3] == 'Completed' %}
+                                bg-success
+                            {% elif reservation[3] == 'Canceled' %}
+                                bg-danger
+                            {% endif %}
+                            rounded-pill"
+                        >{{ reservation[3] }}</span>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    
+        <!-- Add your agent-specific content and features here -->
+    </main>
+
+    <!-- Include Bootstrap 5 JavaScript (Link to Bootstrap 5 via a CDN) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+</body>
+</html>

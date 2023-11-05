@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Astra Realty - Your Dream Home Awaits</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="/static/assets/style.css">
+    <style>
+      body {
+  background-image: url("/static/images/pic2.png");
+  background-repeat: no-repeat;
+  background-size: 100%;
+  text-align: justify;
+}
+
+.card {
+  position: relative;
+  width: 50%;
+  height: auto;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  padding: 32px;
+  overflow: hidden;
+  border-radius: 10px;
+  transition: all 0.5s cubic-bezier(0.23, 1, 0.320, 1);
+  opacity: 0.8;
+  background-color: rgb(216, 214, 213);
+  margin-left: 30px;
+  margin-right: 30px;
+}
+
+.content {
+  display: flex;
+  grid-row: 2;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 5px;
+  margin-top: 10%;
+}
+
+.heading {
+  font-weight: 700;
+  font-size: 32px;
+  text-align: center;
+}
+
+.content .para {
+  line-height: 1.5;
+}
+
+.content .btn {
+  color: #e8e8e8;
+  text-decoration: none;
+  padding: 10px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  background: linear-gradient(-45deg, #008000 0%, #008000 100% );
+  border-radius: 5px;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+}
+
+    </style>
+</head>
+<body>
+  {% include '/includes/navbar.html' %}
+
+  {% include '/includes/flash_message.html' %}
+
+
+  
+  <section id="welcome" class="container text-center my-5">
+    <h2>Welcome to Astra Realty</h2>
+    <p class="lead">Discover your perfect living space with Astra Realty. We specialize in connecting you with exceptional properties that cater to your unique lifestyle. Whether you're looking for a cozy apartment, a family-friendly house, or a luxurious villa, we have the ideal options for you.</p>
+  
+    <!-- Login and Register Buttons -->
+    <div class="mt-4">
+      <a href="login" class="btn btn-primary">Login</a>
+      <a href="register" class="btn btn-secondary">Register</a>
+    </div>
+  </section>
+  
+
+<div class="content">
+  <div class="card">
+      <p class="heading">Our Mission
+      </p><p class="para">
+        At Astra Realty Corp, our vision is to redefine the real estate experience by consistently exceeding expectations and setting new industry standards. We envision a future where every individual's dream of finding their perfect home becomes a reality. Through innovation, unwavering commitment, and a deep understanding of our clients' aspirations, we aim to revolutionize the way people discover, invest, and thrive in properties. Our ultimate goal is to leave an indelible mark on the lives we touch, by connecting people with not just properties, but with their dreams.
+      </p>
+    </div>
+  <div class="card">
+      <p class="heading">Our Vision
+      </p><p class="para">
+       At Astra Realty Corp is to empower and guide our clients through their property journeys with unparalleled expertise and personalized care. We are dedicated to delivering exceptional value by curating a diverse portfolio of properties that cater to unique lifestyles and preferences. Our mission is to foster lasting relationships, built on integrity, professionalism, and trust. We commit ourselves to continuously innovate and adapt to evolving market dynamics, ensuring that our clients are equipped with the insights and resources needed to make informed decisions. By embracing challenges and embracing opportunities, we endeavor to shape the future of real estate with a legacy of excellence and impact.
+      </p>
+    </div>
+  </div>
+
+
+<footer class="text-center py-4">
+  <p>&copy; 2023 Astra Realty. All rights reserved.</p>
+</footer>
+</body>
+</html>

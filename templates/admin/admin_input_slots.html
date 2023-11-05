@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Add your meta tags, title, and CSS links here -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Input for Properties Slots</title>
+    <link href="/static/assets/admin.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    {% include '/includes/flash_message.html' %}
+
+    <!-- Include the admin sidebar -->
+    {% include '/includes/admin_sidebar.html' %}
+            
+    <!-- Main content -->
+    <div class="custom-content">
+        <div class="container mt-1">
+            <h1 class="mt-4">Admin Input for Properties Slots</h1>
+            <form method="POST" action="/admin/submit_slots">
+                <div class="form-group">
+                    <label for="property">Select Property:</label>
+                    <select name="property" class="form-control" required>
+                        {% for property in properties %}
+                            <option value="{{ property[0] }}"> {{ property[1] }} - {{ property[2] }}</option>
+                        {% endfor %}
+                    </select>                    
+                </div>
+                                  
+                <div class="form-group">
+                    <label for="slot_type">Slot Type:</label>
+                    <input type="text" name="slot_type" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="availability_status">Availability Status:</label>
+                    <select name="availability_status" class="form-control" required>
+                        <option value="available">Available</option>
+                        <option value="reserved">Reserved</option>
+                        <option value="bought">Bought</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="parcel">Parcel:</label>
+                    <input type="text" id="parcel" name="parcel" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="block">Block:</label>
+                    <input type="text" id="block" name="block" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="slot">Slot:</label>
+                    <input type="text" id="slot" name="slot" class="form-control" required>
+                </div>                
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

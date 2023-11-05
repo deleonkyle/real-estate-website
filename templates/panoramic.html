@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>360° Panoramic View</title>
+    <style>
+        /* Add any custom styles here */
+    </style>
+</head>
+<body>
+    <div id="pano" style="width: 100%; height: 400px;"></div>
+    <script src="path/to/photo-sphere-viewer.js"></script>
+    <script>
+        var viewer = new PhotoSphereViewer({
+            container: 'pano',
+            panorama: '/static/pano/Panorama.jpg',
+            navbar: 'zoom fullscreen',
+            default_fov: 70,
+            mousewheel: false,
+        });
+    </script>
+</body>
+</html>

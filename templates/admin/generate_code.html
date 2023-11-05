@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generate Invitation Code</title>
+    <!-- Include Bootstrap CSS or your preferred CSS styles -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h2 class="mt-3">Generate Invitation Code</h2>
+        <form method="POST">
+            <div class="form-group">
+                <label for="code_length">Code Length:</label>
+                <input type="number" name="code_length" id="code_length" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="quantity">Quantity:</label>
+                <input type="number" name="quantity" id="quantity" class="form-control" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Generate Codes</button>
+        </form>
+    </div>
+
+    <!-- Include Bootstrap JavaScript (jQuery and Popper.js) -->
+    <!-- Add your custom JavaScript for generating codes if needed -->
+</body>
+</html>

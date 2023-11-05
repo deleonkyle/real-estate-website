@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agent Reservations</title>
+    <!-- Add Bootstrap CSS link here -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        table {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif, sans-serif;
+            font-size: 16px;
+            border-collapse: collapse; /* Remove border lines between cells */
+            width: 100%;
+            background-color: #fff; /* Background color for the entire table */
+            border-radius: 10px; /* Rounded table border */
+        }
+
+        th, td {
+            text-align: left;
+            padding: 8px;
+            border: none; /* Remove border for table cells */
+        }
+
+        th {
+            background-color: #fff; /* Background color for table header cells */
+        }
+
+        /* Add spacing between action buttons */
+        .action-buttons {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        /* Custom CSS for the "Generate Report" button */
+        .fixed-button-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        /* Responsive table */
+        .table-responsive {
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    {% include '/includes/flash_message.html' %}
+    
+    {% include '/includes/agent_sidebar.html' %}
+
+    <div class="container mt-4">
+        <div class="row mt-4">
+            <div class="col-md-12">
+                <form action="/agent/agent_reservations" method="get" class="form-inline mb-3">
+                    <div class="form-group mr-3">
+                        <input type="text" class="form-control" name="search" placeholder="Search by client name">
+                    </div>
+                    <div class="form-group mr-3">
+                        <select class="form-control" name="filter">
+                            <option value="all">All Reservations</option>
+                            <option value="scheduled">Scheduled</option>
+                            <option value="completed">Completed</option>
+                            <option value="canceled">Canceled</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Filter</button>
+                </form>
+            </div>
+        </div>
+    
+        <div class="generate-report-button text-right">
+            <a href="#" data-toggle="modal" data-target="#generateReportModal" class="btn btn-info">Generate Report</a>
+        </div>
+
+        <div class="row mt-4">
+            {% if reservations %}
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Visit ID</th>
+                                <th>Client Name</th>
+                                <th>Client Email</th>
+                                <th>Client Number</th>
+                                <th>Visit Date</th>
+                                <th>Visit Time</th>
+                                <th>Status</th>
+                                <th>Reserved Property</th>
+                                <th>Parcel</th>
+                                <th>Block</th>
+                                <th>Slot</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for reservation in reservations %}
+                                <tr>
+                                    <td>{{ reservation[0] }}</td>
+                                    <td>{{ reservation[1] }}</td>
+                                    <td>{{ reservation[2] }}</td>
+                                    <td>{{ reservation[3] }}</td>
+                                    <td>{{ reservation[4] }}</td>
+                                    <td>{{ reservation[5] }}</td>
+                                    <td>{{ reservation[6] }}</td>
+                                    <td>{{ reservation[11] }} - {{ reservation[12] }}</td>
+                                    <td>{{ reservation[9] }}</td>
+                                    <td>{{ reservation[8] }}</td>
+                                    <td>{{ reservation[10] }}</td>
+                                    <td class="action-buttons">
+                                        <a href="#" data-toggle="modal" data-target="#rescheduleModal{{ reservation[0] }}" class="btn btn-warning btn-sm mr-2">Reschedule</a>
+                                        <a href="#" data-toggle="modal" data-target="#cancelModal{{ reservation[0] }}" class="btn btn-danger btn-sm">Cancel</a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <div class="col-md-12">
+                    <p class="no-reservations">No reservations found for this agent.</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+   
+   
+    <!-- Generate Report Modal -->
+    <div class="modal fade" id="generateReportModal" tabindex="-1" role="dialog" aria-labelledby="generateReportModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="generateReportModalLabel">Generate Report</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- Add your report generation form here -->
+                    <form action="/agent/generate_report" method="post">
+                        <div class="form-group">
+                            <label for="start_date">Start Date</label>
+                            <input type="date" class="form-control" id="start_date" name="start_date" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="end_date">End Date</label>
+                            <input type="date" class="form-control" id="end_date" name="end_date" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Generate Report</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <!-- Display pagination links -->
+            <ul class="pagination justify-content-center">
+                {% if pagination.pages|length > 1 %}
+                {% if pagination.has_prev %}
+                    <li class="page-item">
+                        <a class="page-link" href="{{ url_for('agent_reservations', page=1, filter=filter_option, search=search_query) }}">First</a>
+                    </li>
+                {% endif %}
+                {% if pagination.has_prev %}
+                    <li class="page-item">
+                        <a class="page-link" href="{{ url_for('agent_reservations', page=pagination.prev_num, filter=filter_option, search=search_query) }}">Previous</a>
+                    </li>
+                {% endif %}
+                {% for page_num in pagination.items %}
+                    <li class="page-item{% if page_num == pagination.page %} active{% endif %}">
+                        <a class="page-link" href="{{ url_for('agent_reservations', page=page_num, filter=filter_option, search=search_query) }}">{{ page_num }}</a>
+                    </li>
+                {% endfor %}
+                {% if pagination.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="{{ url_for('agent_reservations', page=pagination.next_num, filter=filter_option, search=search_query) }}">Next</a>
+                    </li>
+                {% endif %}
+                {% if pagination.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="{{ url_for('agent_reservations', page=pagination.pages, filter=filter_option, search=search_query) }}">Last</a>
+                    </li>
+                {% endif %}
+            {% endif %}            
+            </ul>
+        </div>
+    </div>
+    
+    
+    <!-- Reschedule Reservation Modals -->
+    {% for reservation in reservations %}
+        <div class="modal fade" id="rescheduleModal{{ reservation[0] }}" tabindex="-1" role="dialog" aria-labelledby="rescheduleModalLabel{{ reservation[0] }}" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="rescheduleModalLabel{{ reservation[0] }}">Reschedule Reservation</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p><strong>Current Date:</strong> {{ reservation[4] }}</p>
+                        <p><strong>Current Time:</strong> {{ reservation[5] }}</p>
+                        
+                        <form action="/agent/reschedule_reservation/{{ reservation[0] }}" method="post">
+                            <div class="form-group">
+                                <label for="new_date">New Date</label>
+                                <input type="date" class="form-control" id="new_date" name="new_date" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="new_time">New Time</label>
+                                <input type="time" class="form-control" id="new_time" name="new_time" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Reschedule</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+
+    <!-- Cancel Reservation Modals -->
+    {% for reservation in reservations %}
+        <div class="modal fade" id="cancelModal{{ reservation[0] }}" tabindex="-1" role="dialog" aria-labelledby="cancelModalLabel{{ reservation[0] }}" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="cancelModalLabel{{ reservation[0] }}">Cancel Reservation</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Are you sure you want to cancel this reservation?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <a href="/agent/cancel_reservation/{{ reservation[0] }}" class="btn btn-danger">Confirm Cancel</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

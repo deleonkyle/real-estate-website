@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="/static/assets/aframe.js"></script>
+    <title>Panoramic Photo Viewer</title>
+</head>
+<body>
+    <a-scene>
+        <!-- Add the A-Frame camera entity for user interaction -->
+        <a-entity camera look-controls>
+            <a-cursor
+                cursor="fuse: true; fuseTimeout: 500;"
+                position="0 0 -1"
+                geometry="primitive: ring; radiusInner: 0.02; radiusOuter: 0.03"
+                material="color: red; shader: flat"
+            ></a-cursor>
+        </a-entity>
+
+        <!-- Use the a-sky to display the panoramic image -->
+        {% if virtual_tour_images %}
+            <a-sky src="{{ url_for('static', filename='uploads/' + virtual_tour_images[0][0]) }}"></a-sky>
+        {% else %}
+            <!-- Handle the case where no virtual tour images are found -->
+            <p>No virtual tour images found.</p>
+        {% endif %}
+
+        <!-- Add more A-Frame images or hotspots for navigation -->
+        <!-- Modify this section based on your needs -->
+
+        <!-- Input controls -->
+        <a-entity id="toggleButton" position="0 -1 -3" geometry="primitive: plane; width: 2; height: 0.2"
+            material="color: #333; shader: flat" cursor-listener>
+            <a-text value="Toggle Images" color="#fff" align="center" position="0 0 0.1"></a-text>
+        </a-entity>
+
+        <!-- Handle input control actions with a JavaScript component -->
+        <a-entity id="imageContainer" image-switcher></a-entity>
+
+        <!-- Example of navigation buttons -->
+<a-entity id="nextButton" position="2 0 -3" geometry="primitive: plane; width: 0.5; height: 0.2"
+material="color: #333; shader: flat" cursor-listener>
+<a-text value="Next" color="#fff" align="center" position="0 0 0.1"></a-text>
+</a-entity>
+<a-entity id="prevButton" position="-2 0 -3" geometry="primitive: plane; width: 0.5; height: 0.2"
+material="color: #333; shader: flat" cursor-listener>
+<a-text value="Previous" color="#fff" align="center" position="0 0 0.1"></a-text>
+</a-entity>
+
+    </a-scene>
+
+    <script>
+        AFRAME.registerComponent('cursor-listener', {
+            // Define your cursor listener component if needed
+        });
+
+        AFRAME.registerComponent('image-switcher', {
+            // Define your image switcher component if needed
+        });
+        AFRAME.registerComponent('image-switcher', {
+    init: function () {
+        const el = this.el;
+        let currentIndex = 0;
+        const images = ['image1.jpg', 'image2.jpg', 'image3.jpg'];
+
+        el.addEventListener('next-image', function () {
+            currentIndex = (currentIndex + 1) % images.length;
+            el.setAttribute('material', 'src', images[currentIndex]);
+        });
+
+        el.addEventListener('previous-image', function () {
+            currentIndex = (currentIndex - 1 + images.length) % images.length;
+            el.setAttribute('material', 'src', images[currentIndex]);
+        });
+    }
+});
+
+    </script>
+</body>
+</html>
