@@ -192,7 +192,33 @@ def admin_delete_slot(slot_id):
 
 @app.route('/index')
 def index():
-    return render_template('index.html')
+    # Establish a database connection
+    connection = get_db_connection()
+
+    # Prepare a cursor to execute SQL queries
+    cursor = connection.cursor()
+
+    # Query to select the first three properties from the database
+    query = "SELECT * FROM properties LIMIT 3"
+
+    # Execute the query
+    cursor.execute(query)
+
+    # Fetch the first three properties as a list of dictionaries
+    featured_properties = cursor.fetchall()
+
+    # Close the cursor and database connection
+    cursor.close()
+    connection.close()
+
+    # Render an HTML template and pass the featured property data to it
+    return render_template('index.html', featured_properties=featured_properties)
+
+
+
+@app.route('/contact')
+def contact():
+    return render_template('contact.html')
 
 @app.route('/v_tour')
 def v_tour():
@@ -233,10 +259,6 @@ def virtual_tour(property_id):
         return render_template('virtual_tour.html', virtual_tour_images=virtual_tour_images)
     else:
         return "Virtual tour not found or an error occurred"
-
-
-
-
 
 @app.route('/agent/agent_logout', methods=['GET'])
 def agent_logout():
@@ -424,23 +446,40 @@ def edit_schedule(agent_id):
         return redirect(url_for('admin_dashboard'))
 
     # Fetch the agent's schedule from the database using agent_id
-    agent_schedule = get_agent_schedule_by_id(agent_id)  # Replace with your database query
+    agent_schedule = get_agent_schedule_by_id(agent_id)
+    
+    # Fetch agent details (agent_name and realty_affiliation)
+    agent_name, realty_affiliation = get_agent_details(agent_id)
 
     if request.method == 'POST':
         # Handle form submission and update the agent's schedule in the database
         updated_schedule_data = {
-            'month': request.form['month'],
-            'year': request.form['year'],
-            # Extract form fields and update the schedule data
+        'DayOfMonth': request.form['DayOfMonth'],
+        'Month': request.form['Month'],
+        'Year': request.form['Year'],
+        'StartTime': request.form['StartTime'],
+        'EndTime': request.form['EndTime'],
         }
 
-        # Update the schedule data in the database, e.g., using a query
-        update_agent_schedule(agent_id, updated_schedule_data)  # Replace with your update query
+        # Update the schedule data in the database
+        update_agent_schedule(agent_id, updated_schedule_data)
 
         flash('Schedule updated successfully!', 'success')
-        return redirect(url_for('admin_dashboard'))
+        return redirect(url_for('agents_schedules'))
 
-    return render_template('/admin/edit_schedule.html', agent_schedule=agent_schedule)
+    return render_template('/admin/edit_schedule.html', agent_schedule=agent_schedule, agent_name=agent_name, realty_affiliation=realty_affiliation)
+
+
+def get_agent_schedule_by_id(agent_id):
+    connection = get_db_connection()
+    try:
+        with connection.cursor() as cursor:
+            # Fetch the agent's schedule data by AgentID
+            cursor.execute("SELECT * FROM agents_schedule WHERE AgentID = %s", (agent_id,))
+            agent_schedule = cursor.fetchone()
+            return agent_schedule
+    finally:
+        connection.close()
 
 
 @app.route('/admin/delete-schedule/<int:agent_id>', methods=['DELETE'])
@@ -458,17 +497,6 @@ def delete_schedule(agent_id):
     return jsonify({'success': False, 'message': 'Invalid request.'})
 
 
-def get_agent_schedule_by_id(agent_id):
-    connection = get_db_connection()
-    try:
-        with connection.cursor() as cursor:
-            # Fetch the agent's schedule data by AgentID
-            cursor.execute("SELECT * FROM agents_schedule WHERE AgentID = %s", (agent_id,))
-            agent_schedule = cursor.fetchone()
-            return agent_schedule
-    finally:
-        connection.close()
-
 @app.route('/admin/agents_schedules')
 def agents_schedules():
 
@@ -476,6 +504,20 @@ def agents_schedules():
 
     # Pass the fetched data to the HTML template
     return render_template('/admin/agents_schedules.html', agent_schedules=agent_schedules)
+
+def get_agent_details(agent_id):
+    connection = get_db_connection()
+    try:
+        with connection.cursor() as cursor:
+            cursor.execute("SELECT FirstName, LastName, RealtyAffiliation FROM agents WHERE AgentID = %s", (agent_id,))
+            agent_data = cursor.fetchone()
+            if agent_data:
+                agent_name = f"{agent_data[0]} {agent_data[1]}"  # Use index to access elements
+                realty_affiliation = agent_data[2]  # Use index to access elements
+                return agent_name, realty_affiliation
+    finally:
+        connection.close()
+
 
 def get_agent_schedules():
     try:
@@ -624,14 +666,29 @@ def property_details(property_id):
     image_filename = property_details[11]
     image_url = url_for('static', filename=f'uploads/{image_filename}')
     property_images = get_property_images(property_id)
+
+    # Check if the user is logged in (you'll need to implement your authentication logic)
+    user_is_logged_in = check_user_authentication()  # Replace this with your authentication logic
+
     # Get available slots for the property
     available_slots = get_available_slots(property_id)
     available_slots_json = json.dumps(available_slots)
+
     # Create a list of reservation URLs for each available slot
     reservation_urls = [url_for('reservation', property_id=property_id, slot_id=slot[0]) for slot in available_slots]
-    
-    return render_template('property_details.html',available_slots_json=available_slots_json ,property_details=property_details, image_url=image_url, property_id=property_id, available_slots=available_slots, reservation_urls=reservation_urls, property=property, property_images=property_images)
 
+    return render_template('property_details.html', user_is_logged_in=user_is_logged_in, available_slots_json=available_slots_json, property_details=property_details, image_url=image_url, property_id=property_id, available_slots=available_slots, reservation_urls=reservation_urls, property=property, property_images=property_images)
+
+def check_user_authentication():
+    # Check if 'user_id' is present in the session
+    user_id = session.get('user_id')
+
+    if user_id is not None:
+        # User is logged in
+        return True
+    else:
+        # User is not logged in
+        return False
 def get_property_images(property_id):
     # Create a database connection
     conn = get_db_connection()
@@ -1658,7 +1715,7 @@ def property_list():
 @app.route('/search', methods=['POST'])
 def property_search():
     province = request.form.get('province')
-    house_type = request.form.get('type')
+    price = request.form.get('price')
     location = request.form.get('location')
         
     query = "SELECT * FROM properties WHERE 1=1"
@@ -1667,9 +1724,9 @@ def property_search():
     if province:
         query += " AND province = %s"
         parameters.append(province)
-    if house_type:
-        query += " AND type = %s"
-        parameters.append(house_type)
+    if price:
+        query += " AND price <= %s"  # Modify the condition based on your requirements
+        parameters.append(price)
     if location:
         query += " AND location = %s"
         parameters.append(location)
@@ -1688,6 +1745,7 @@ def property_search():
     return render_template('search_results.html', properties=properties)
 
 
+
 # Specify the allowed file extensions for image uploads
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 
@@ -1695,7 +1753,6 @@ ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-# Registration route
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
@@ -1724,8 +1781,8 @@ def register():
             # Handle the case where no profile image is provided
             profile_image_url = None
 
-        # Hash the password
-        password_hash = generate_password_hash(password)
+        # Hash the password using PBKDF2-SHA256
+        password_hash = generate_password_hash(password, method='pbkdf2:sha256', salt_length=8)
 
         try:
             connection = get_db_connection()
@@ -1740,6 +1797,7 @@ def register():
             connection.close()
             return redirect(url_for('login'))
     return render_template('register.html')
+
 
 @app.route('/admin/login', methods=['GET', 'POST'])
 def admin_login():
@@ -1805,19 +1863,19 @@ def login():
         try:
             connection = get_db_connection()
             with connection.cursor() as cursor:
-                cursor.execute("SELECT * FROM agents WHERE Username = %s", (username,))
-                agent = cursor.fetchone()
-                if agent:
-                    agent_id = agent[0]
-                    username = agent[1]
-                    password_hash = agent[2]
+                cursor.execute("SELECT * FROM users WHERE Username = %s", (username,))
+                user = cursor.fetchone()
+                if user:
+                    user_id = user[0]
+                    username = user[1]
+                    password_hash = user[2]
 
                     if check_password_hash(password_hash, password):
-                        session['agent_id'] = agent_id
+                        session['user_id'] = user_id
                         flash('Login successful!', 'success')
                         
-                        # Redirect agents to their dashboard
-                        return redirect(url_for('agent_dashboard'))
+                        # Redirect clients to their dashboard or another appropriate page
+                        return redirect(url_for('index'))
                     else:
                         flash('Invalid password', 'danger')
                 else:
@@ -1828,6 +1886,14 @@ def login():
             connection.close()
 
     return render_template('login.html')
+
+@app.route('/logout')
+def logout():
+    # Remove the 'user_id' key from the session to log the user out
+    session.pop('user_id', None)
+    
+    # Redirect the user to the home page or another appropriate page
+    return redirect(url_for('index'))
 
 # Route for the agent dashboard
 @app.route('/agent/agent_dashboard')
@@ -2290,6 +2356,103 @@ def delete_agent(agent_id):
 
     return redirect('/admin/admin_agent_management')
 
+from flask import Flask, request, render_template, send_file, make_response
+from reportlab.lib.pagesizes import letter
+from reportlab.platypus import SimpleDocTemplate, Paragraph
+from reportlab.lib.styles import getSampleStyleSheet
+import pdfrw
+
+import pdfrw
+from pdfrw import PdfDict
+
+
+@app.route('/input_data', methods=['GET', 'POST'])
+def input_data():
+    if request.method == 'POST':
+        user_data = {
+            'lastname': request.form['lastname'],
+            'middlename': request.form['middlename'],
+            'firstname': request.form['firstname'],
+            'birthdate': request.form['birthdate'],
+            'birthplace': request.form['birthplace'],
+            'age': request.form['age'],
+            'gender': request.form['gender'],
+            'nationality': request.form['nationality'],
+            'dependents': request.form['dependents'],
+            'tin': request.form['tin'],
+            'sss': request.form['sss'],
+            'ctc': request.form['ctc'],
+            'dateplaceissued': request.form['dateplaceissued'],
+            'number_street': request.form['number_street'],
+            'district_town': request.form['district_town'],
+            'municipality_city': request.form['municipality_city'],
+            'state_country': request.form['state_country'],
+            'zip_code': request.form['zip_code'],
+            'landline_phone': request.form['landline_phone'],
+            'email': request.form['email'],
+            'facebook_account': request.form['facebook_account'],
+            'employer_name': request.form['employer_name'],
+            'office_address': request.form['office_address'],
+            'division_department': request.form['division_department'],
+            'position': request.form['position'],
+            'years_in_employment': request.form['years_in_employment'],
+            'telephone_fax': request.form['telephone_fax'],
+            'basic_salary': request.form['basic_salary'],
+            'allowance_remuneration': request.form['allowance_remuneration'],
+            'gross_income': request.form['gross_income'],
+            'spouse_birthdate': request.form['spouse_birthdate'],
+            'spouse_birthplace': request.form['spouse_birthplace'],
+            'spouse_age': request.form['spouse_age'],
+            'spouse_lastname': request.form['spouse_lastname'],
+            'spouse_firstname': request.form['spouse_firstname'],
+            'spouse_middle_name': request.form['spouse_middle_name'],
+        
+            'spouse_employer_name': request.form['spouse_employer_name'],
+            'spouse_office_address': request.form['spouse_office_address'],
+            'spouse_division_department': request.form['spouse_division_department'],
+            'spouse_position': request.form['spouse_position'],
+            'spouse_years_in_employment': request.form['spouse_years_in_employment'],
+            'spouse_telephone_fax': request.form['spouse_telephone_fax'],
+            'spouse_basic_salary': request.form['spouse_basic_salary'],
+            'spouse_allowance_remuneration': request.form['spouse_allowance_remuneration'],
+            'spouse_gross_income': request.form['spouse_gross_income'],
+            'reference1_name': request.form['reference1_name'],
+            'reference1_relationship': request.form['reference1_relationship'],
+            'reference1_contact_no': request.form['reference1_contact_no'],
+            'reference2_name': request.form['reference2_name'],
+            'reference2_relationship': request.form['reference2_relationship'],
+            'reference2_contact_no': request.form['reference2_contact_no'],
+            'reference3_name': request.form['reference3_name'],
+            'reference3_relationship': request.form['reference3_relationship'],
+            'reference3_contact_no': request.form['reference3_contact_no'],
+        
+        }
+
+        # Get the selected civil status value, default to blank
+        selected_status = request.form.get('civilstatus', ' ')
+
+        # Load the existing PDF template
+        pdf_template = pdfrw.PdfReader('templates/reservform.pdf')
+
+        for page in pdf_template.pages:
+            annotations = page['/Annots']
+            if annotations:
+                for annotation in annotations:
+                    if '/T' in annotation and '/V' in annotation:
+                        field_name = annotation['/T'][1:-1]
+                        if field_name in user_data:
+                            annotation.update(pdfrw.PdfDict(V=user_data[field_name]))
+                        elif field_name == 'civilstatus':
+                            annotation.update(pdfrw.PdfDict(V=selected_status))
+
+        # Save the filled-in PDF as a new file
+        filled_pdf_filename = 'filled_template.pdf'
+        pdfrw.PdfWriter().write(filled_pdf_filename, pdf_template)
+
+        # Serve the filled-in PDF for download
+        return send_file(filled_pdf_filename, as_attachment=True)
+
+    return render_template('form.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
