@@ -1805,7 +1805,7 @@ def register():
 def admin_register():
     if request.method == 'POST':
         username = request.form['username']
-        password = request.form['password']
+        passwordhash = request.form['passwordhash']
         email = request.form['email']
         user_type = 'admin'  # Set the user type to 'admin' for admin registrations
 
@@ -1821,8 +1821,8 @@ def admin_register():
         try:
             connection = get_db_connection()
             with connection.cursor() as cursor:
-                sql = "INSERT INTO users (Username, Password, Email, UserType, FirstName, LastName, DateOfBirth, PhoneNumber) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
-                cursor.execute(sql, (username, password, email, user_type, first_name, last_name, date_of_birth, phone_number))
+                sql = "INSERT INTO users (Username, passwordhash, Email, UserType, FirstName, LastName, DateOfBirth, PhoneNumber) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
+                cursor.execute(sql, (username, passwordhash, email, user_type, first_name, last_name, date_of_birth, phone_number))
                 connection.commit()
                 flash('Admin registration successful!', 'success')
         except pymysql.Error as e:
@@ -1843,10 +1843,10 @@ def admin_login():
 
     if request.method == 'POST':
         username = request.form['username']
-        password = request.form['password']
+        passwordhash = request.form['passwordhash']
 
         # Authenticate the user using your authentication function
-        user_type = authenticate_user(username, password)
+        user_type = authenticate_user(username, passwordhash)
 
         if user_type == 'admin':
             # If the user is an admin, set the session variable and redirect
@@ -1859,6 +1859,36 @@ def admin_login():
             return redirect(url_for('admin_login'))
 
     return render_template('/admin/login.html')
+
+def authenticate_user(username, passwordhash):
+    try:
+        connection = get_db_connection()
+        with connection.cursor() as cursor:
+            # Query the user's record by username
+            cursor.execute("SELECT UserID, Password, UserType FROM users WHERE Username = %s", (username,))
+            user_data = cursor.fetchone()
+
+            if user_data:
+                user_id, stored_password, user_type = user_data
+                # Check if the entered password matches the stored password (no hashing)
+                if passwordhash == stored_password:
+                    session['UserType'] = user_type  # Store user type in session
+                    session['UserID'] = user_id  # Optionally, store user ID in session
+                    return user_type  # Authentication successful, return the user's type
+                else:
+                    return None  # Password doesn't match
+            else:
+                return None  # User not found
+    except pymysql.Error as e:
+        print(f"Database Error: {str(e)}")
+        return None
+    finally:
+        if connection:
+            connection.close()
+
+
+
+
 
 def authenticate_user(username, password):
     try:
@@ -1888,35 +1918,6 @@ def authenticate_user(username, password):
 
 
 
-
-
-def authenticate_user(username, password):
-    try:
-        connection = get_db_connection()
-        with connection.cursor() as cursor:
-            # Query the user's record by username
-            cursor.execute("SELECT UserID, PasswordHash, UserType FROM users WHERE Username = %s", (username,))
-            user_data = cursor.fetchone()
-
-            if user_data:
-                user_id, stored_password_hash, user_type = user_data
-                print(f"Entered username: {username}")
-                print(f"Stored password hash: {stored_password_hash}")
-                # Check if the entered password matches the stored hash
-                if check_password_hash(stored_password_hash, password):
-                    session['UserType'] = user_type  # Store user type in session
-                    session['UserID'] = user_id  # Optionally, store user ID in session
-                    return user_type  # Authentication successful, return the user's type
-                else:
-                    return None  # Password doesn't match
-            else:
-                return None  # User not found
-    except pymysql.Error as e:
-        print(f"Database Error: {str(e)}")
-        return None
-    finally:
-        if connection:
-            connection.close()
 
 
 @app.route('/login', methods=['GET', 'POST'])
