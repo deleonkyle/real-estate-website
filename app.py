@@ -15,15 +15,18 @@ import hashlib
 app = Flask(__name__)
 app.secret_key = 'b1fd2e52903ba3d848b4ca718c9e2d2f08a94fa7d8721aa1'
 
-db_host = 'localhost'
+db_host = '35.193.112.222'  # Use your Google Cloud SQL instance's IP address
 db_user = 'root'
-db_password = 'root'
+db_password = 'root'  # Replace with your actual password
 db_name = 'astra'
 
+# Your database configuration
 app.config['UPLOAD_FOLDER'] = 'static/uploads'
 
 def get_db_connection():
-    return pymysql.connect(host=db_host, user=db_user, password=db_password, database=db_name)
+    connection = pymysql.connect(host=db_host, user=db_user, password=db_password, db=db_name, cursorclass=pymysql.cursors.DictCursor)
+    return connection
+
 
 @app.route('/admin/admin_add_slots', methods=['GET'])
 def admin_input_slots():
