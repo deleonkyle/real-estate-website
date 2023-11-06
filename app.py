@@ -15,19 +15,15 @@ import hashlib
 app = Flask(__name__)
 app.secret_key = 'b1fd2e52903ba3d848b4ca718c9e2d2f08a94fa7d8721aa1'
 
-app.config['UPLOAD_FOLDER'] = 'static/uploads'
-
-connection_name = 'skilful-display-404217:us-central1:root'
+db_host = 'localhost'
+db_user = 'root'
+db_password = 'root'
 db_name = 'astra'
 
+app.config['UPLOAD_FOLDER'] = 'static/uploads'
+
 def get_db_connection():
-    return pymysql.connect(
-        unix_socket=f'/cloudsql/{connection_name}',
-        user='root',
-        db=db_name,
-        charset='utf8mb4',
-        cursorclass=pymysql.cursors.DictCursor
-    )
+    return pymysql.connect(host=db_host, user=db_user, password=db_password, database=db_name)
 
 @app.route('/admin/admin_add_slots', methods=['GET'])
 def admin_input_slots():
@@ -194,7 +190,7 @@ def admin_delete_slot(slot_id):
     return redirect(url_for('admin_properties_slots'))
 
 
-@app.route('/')
+@app.route('/index')
 def index():
     # Establish a database connection
     connection = get_db_connection()
