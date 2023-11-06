@@ -1801,6 +1801,40 @@ def register():
             return redirect(url_for('login'))
     return render_template('register.html')
 
+@app.route('/admin/register', methods=['GET', 'POST'])
+def admin_register():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        email = request.form['email']
+        user_type = 'admin'  # Set the user type to 'admin' for admin registrations
+
+        # Extract other admin-specific user attributes here
+        first_name = request.form['first_name']
+        last_name = request.form['last_name']
+        date_of_birth = request.form['date_of_birth']
+        phone_number = request.form['phone_number']
+
+        # Handle file upload if needed
+
+        # Hash the password using PBKDF2-SHA256
+        password_hash = generate_password_hash(password, method='pbkdf2:sha256', salt_length=8)
+
+        # Insert the admin user data into the database
+        try:
+            connection = get_db_connection()
+            with connection.cursor() as cursor:
+                sql = "INSERT INTO users (Username, PasswordHash, Email, UserType, FirstName, LastName, DateOfBirth, PhoneNumber) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
+                cursor.execute(sql, (username, password_hash, email, user_type, first_name, last_name, date_of_birth, phone_number))
+                connection.commit()
+                flash('Admin registration successful!', 'success')
+        except pymysql.Error as e:
+            flash(f"Error: {str(e)}", 'danger')
+        finally:
+            connection.close()
+            return redirect(url_for('admin_login'))
+
+    return render_template('admin/register.html')
 
 @app.route('/admin/login', methods=['GET', 'POST'])
 def admin_login():

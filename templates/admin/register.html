@@ -1,0 +1,57 @@
+<!-- admin_register.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Registration</title>
+    <!-- Include Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <h2 class="mt-5">Admin Registration</h2>
+        <form class="mt-4" method="POST" action="/admin/register">
+            <div class="form-group">
+                <label for="username">Username:</label>
+                <input type="text" class="form-control" name="username" required>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" class="form-control" name="password" required>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" class="form-control" name="email" required>
+            </div>
+
+            <div class="form-group">
+                <label for="first_name">First Name:</label>
+                <input type="text" class="form-control" name="first_name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="last_name">Last Name:</label>
+                <input type="text" class="form-control" name="last_name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="date_of_birth">Date of Birth:</label>
+                <input type="date" class="form-control" name="date_of_birth" required>
+            </div>
+
+            <div class="form-group">
+                <label for="phone_number">Phone Number:</label>
+                <input type="text" class="form-control" name="phone_number" required>
+            </div>
+
+            <!-- Include file upload if needed -->
+
+            <button type="submit" class="btn btn-primary">Register</button>
+        </form>
+    </div>
+    <!-- Include Bootstrap JS and jQuery for additional functionality -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
