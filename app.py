@@ -1851,13 +1851,15 @@ def admin_login():
         user_type = authenticate_user(username, password)
 
         if user_type == 'admin':
-            # If the user is an admin, set the session variable and redirect
+    # If the user is an admin, set the session variable and redirect
             session['UserType'] = user_type
             flash('Login successful!', 'success')
             return redirect(url_for('admin_dashboard'))
         else:
+            flash(f'Authentication result: {user_type}', 'danger')  # Add this line
             flash('Invalid credentials or not an admin user. Please try again.', 'danger')
             return redirect(url_for('admin_login'))
+
 
     return render_template('/admin/login.html')
 
