@@ -1817,15 +1817,12 @@ def admin_register():
 
         # Handle file upload if needed
 
-        # Hash the password using PBKDF2-SHA256
-        password_hash = generate_password_hash(password, method='pbkdf2:sha256', salt_length=8)
-
         # Insert the admin user data into the database
         try:
             connection = get_db_connection()
             with connection.cursor() as cursor:
-                sql = "INSERT INTO users (Username, PasswordHash, Email, UserType, FirstName, LastName, DateOfBirth, PhoneNumber) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
-                cursor.execute(sql, (username, password_hash, email, user_type, first_name, last_name, date_of_birth, phone_number))
+                sql = "INSERT INTO users (Username, Password, Email, UserType, FirstName, LastName, DateOfBirth, PhoneNumber) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
+                cursor.execute(sql, (username, password, email, user_type, first_name, last_name, date_of_birth, phone_number))
                 connection.commit()
                 flash('Admin registration successful!', 'success')
         except pymysql.Error as e:
@@ -1835,6 +1832,7 @@ def admin_register():
             return redirect(url_for('admin_login'))
 
     return render_template('admin/register.html')
+
 
 @app.route('/admin/login', methods=['GET', 'POST'])
 def admin_login():
@@ -1851,7 +1849,7 @@ def admin_login():
         user_type = authenticate_user(username, password)
 
         if user_type == 'admin':
-    # If the user is an admin, set the session variable and redirect
+            # If the user is an admin, set the session variable and redirect
             session['UserType'] = user_type
             flash('Login successful!', 'success')
             return redirect(url_for('admin_dashboard'))
@@ -1860,8 +1858,34 @@ def admin_login():
             flash('Invalid credentials or not an admin user. Please try again.', 'danger')
             return redirect(url_for('admin_login'))
 
-
     return render_template('/admin/login.html')
+
+def authenticate_user(username, password):
+    try:
+        connection = get_db_connection()
+        with connection.cursor() as cursor:
+            # Query the user's record by username
+            cursor.execute("SELECT UserID, Password, UserType FROM users WHERE Username = %s", (username,))
+            user_data = cursor.fetchone()
+
+            if user_data:
+                user_id, stored_password, user_type = user_data
+                # Check if the entered password matches the stored password (no hashing)
+                if password == stored_password:
+                    session['UserType'] = user_type  # Store user type in session
+                    session['UserID'] = user_id  # Optionally, store user ID in session
+                    return user_type  # Authentication successful, return the user's type
+                else:
+                    return None  # Password doesn't match
+            else:
+                return None  # User not found
+    except pymysql.Error as e:
+        print(f"Database Error: {str(e)}")
+        return None
+    finally:
+        if connection:
+            connection.close()
+
 
 
 
