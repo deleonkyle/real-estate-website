@@ -1876,6 +1876,8 @@ def authenticate_user(username, password):
 
             if user_data:
                 user_id, stored_password_hash, user_type = user_data
+                print(f"Entered username: {username}")
+                print(f"Stored password hash: {stored_password_hash}")
                 # Check if the entered password matches the stored hash
                 if check_password_hash(stored_password_hash, password):
                     session['UserType'] = user_type  # Store user type in session
