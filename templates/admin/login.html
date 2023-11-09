@@ -33,7 +33,7 @@
         <div class="row">
             <div class="col-md-6 offset-md-3">
                 <div class="card my-5">
-                    <form class="card-body cardbody-color p-lg-5" method="POST" action="/admin/login">
+                    <form class="card-body cardbody-color p-lg-5" >
                         <h2 class="text-center text-dark mt-5">Admin Login</h2>
                         <div class="text-center">
                             <img src="/static/images/astra-realty-logo.png"
@@ -42,20 +42,20 @@
                         </div>
                         <div class="form-group">
                             <label for="username" class="text-dark">User Name</label>
-                            <input type="text" class="form-control" id="username" name="username"
-                                required autofocus>
+                            <input type="text" class="form-control" id="" name="username"
+                                 autofocus>
                         </div>
                         <div class="form-group">
                             <label for="password" class="text-dark">Password</label>
-                            <input type="password" class="form-control" id="password" name="password"
-                                required>
+                            <input type="password" class="form-control" id="" name="password"
+                                >
                         </div>
                         <div class="form-check">
                             <input type="checkbox" class="form-check-input" id="rememberMe">
                             <label class="form-check-label" for="rememberMe">Remember Me</label>
                         </div>
                         <div class="text-center mt-4"> <!-- Increased spacing -->
-                            <button type="submit" class="btn btn-color px-5 w-100" id="loginButton" disabled>Login</button>
+                            <button type="" href="admin_dashboard" class="btn btn-color px-5 w-100" id="loginButton" >Login</button>
                         </div>
                         <div id="error-message" class="form-text text-center mb-3 text-danger">
                             {% if error_message %}

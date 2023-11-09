@@ -15,7 +15,7 @@ import hashlib
 app = Flask(__name__)
 app.secret_key = 'b1fd2e52903ba3d848b4ca718c9e2d2f08a94fa7d8721aa1'
 
-db_host = '35.193.112.222'  # Use your Google Cloud SQL instance's IP address
+db_host = 'localhost'  # Use your Google Cloud SQL instance's IP address
 db_user = 'root'
 db_password = 'root'  # Replace with your actual password
 db_name = 'astra'
@@ -1815,8 +1815,6 @@ def admin_register():
         date_of_birth = request.form['date_of_birth']
         phone_number = request.form['phone_number']
 
-        # Handle file upload if needed
-
         # Hash the password using PBKDF2-SHA256
         password_hash = generate_password_hash(password, method='pbkdf2:sha256', salt_length=8)
 
@@ -1851,20 +1849,15 @@ def admin_login():
         user_type = authenticate_user(username, password)
 
         if user_type == 'admin':
-    # If the user is an admin, set the session variable and redirect
+            # If the user is an admin, set the session variable and redirect
             session['UserType'] = user_type
             flash('Login successful!', 'success')
             return redirect(url_for('admin_dashboard'))
         else:
-            flash(f'Authentication result: {user_type}', 'danger')  # Add this line
             flash('Invalid credentials or not an admin user. Please try again.', 'danger')
             return redirect(url_for('admin_login'))
 
-
     return render_template('/admin/login.html')
-
-
-
 
 def authenticate_user(username, password):
     try:
@@ -1876,17 +1869,18 @@ def authenticate_user(username, password):
 
             if user_data:
                 user_id, stored_password_hash, user_type = user_data
-                print(f"Entered username: {username}")
-                print(f"Stored password hash: {stored_password_hash}")
-                # Check if the entered password matches the stored hash
                 if check_password_hash(stored_password_hash, password):
-                    session['UserType'] = user_type  # Store user type in session
-                    session['UserID'] = user_id  # Optionally, store user ID in session
-                    return user_type  # Authentication successful, return the user's type
+                    session['UserType'] = user_type
+                    session['UserID'] = user_id
+                    return user_type
                 else:
-                    return None  # Password doesn't match
+                    print("Entered Password:", password)
+                    print("Stored Password Hash:", stored_password_hash)
+                    print("Password doesn't match")
+                    return None
             else:
-                return None  # User not found
+                print("User not found")
+                return None
     except pymysql.Error as e:
         print(f"Database Error: {str(e)}")
         return None
@@ -1894,38 +1888,8 @@ def authenticate_user(username, password):
         if connection:
             connection.close()
 
-
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
-
-        try:
-            connection = get_db_connection()
-            with connection.cursor() as cursor:
-                cursor.execute("SELECT * FROM users WHERE Username = %s", (username,))
-                user = cursor.fetchone()
-                if user:
-                    user_id = user[0]
-                    username = user[1]
-                    password_hash = user[2]
-
-                    if check_password_hash(password_hash, password):
-                        session['user_id'] = user_id
-                        flash('Login successful!', 'success')
-                        
-                        # Redirect clients to their dashboard or another appropriate page
-                        return redirect(url_for('index'))
-                    else:
-                        flash('Invalid password', 'danger')
-                else:
-                    flash('Invalid username', 'danger')
-        except pymysql.Error as e:
-            flash(f"Error: {str(e)}", 'danger')
-        finally:
-            connection.close()
-
     return render_template('login.html')
 
 @app.route('/logout')
