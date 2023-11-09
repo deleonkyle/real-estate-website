@@ -10,23 +10,30 @@ import pandas as pd
 from datetime import datetime, timedelta
 from decimal import Decimal
 from flask_paginate import Pagination, get_page_args
-import hashlib
+import bcrypt
+from passlib.hash import sha256_crypt
+import uuid
+from flask_mail import Mail, Message
 
 app = Flask(__name__)
 app.secret_key = 'b1fd2e52903ba3d848b4ca718c9e2d2f08a94fa7d8721aa1'
 
-db_host = 'localhost'  # Use your Google Cloud SQL instance's IP address
+app.config['MAIL_SERVER'] = 'smtp.example.com'
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USERNAME'] = 'your-email@example.com'
+app.config['MAIL_PASSWORD'] = 'your-password'
+mail = Mail(app)
+
+db_host = '62.72.3.118'
 db_user = 'root'
-db_password = 'root'  # Replace with your actual password
+db_password = 'root'
 db_name = 'astra'
 
-# Your database configuration
 app.config['UPLOAD_FOLDER'] = 'static/uploads'
 
 def get_db_connection():
-    connection = pymysql.connect(host=db_host, user=db_user, password=db_password, db=db_name, cursorclass=pymysql.cursors.DictCursor)
-    return connection
-
+    return pymysql.connect(host=db_host, user=db_user, password=db_password, database=db_name)
 
 @app.route('/admin/admin_add_slots', methods=['GET'])
 def admin_input_slots():
@@ -192,8 +199,7 @@ def admin_delete_slot(slot_id):
     db_connection.close()
     return redirect(url_for('admin_properties_slots'))
 
-
-@app.route('/index')
+@app.route('/')
 def index():
     # Establish a database connection
     connection = get_db_connection()
@@ -216,8 +222,6 @@ def index():
 
     # Render an HTML template and pass the featured property data to it
     return render_template('index.html', featured_properties=featured_properties)
-
-
 
 @app.route('/contact')
 def contact():
@@ -1019,11 +1023,13 @@ def get_total_users_count():
         if connection:
             connection.close()
 
+# Replace 'is_active' and 'registration_date' with the actual column names in your table.
+# Modify these columns according to your table structure.
 def get_active_users_count():
     try:
         connection = get_db_connection()
         with connection.cursor() as cursor:
-            cursor.execute("SELECT COUNT(*) FROM users WHERE is_active = 1")
+            cursor.execute("SELECT COUNT(*) FROM users WHERE active_status_column_name = 1")
             active_users = cursor.fetchone()[0]
         return active_users
     except pymysql.Error as e:
@@ -1040,9 +1046,11 @@ def get_new_users_past_month_count():
             # Calculate the date one month ago from the current date
             one_month_ago = datetime.today() - timedelta(days=30)
 
-            # Query for new users in the past month
-            cursor.execute("SELECT COUNT(*) FROM users WHERE registration_date >= %s", (one_month_ago,))
+            # Modify 'registration_date_column_name' to match your actual column name
+            sql = "SELECT COUNT(*) FROM users WHERE registration_date_column_name BETWEEN DATE_SUB(CURDATE(), INTERVAL 1 MONTH) AND CURDATE()"
+            cursor.execute(sql)
             new_users_past_month = cursor.fetchone()[0]
+
         return new_users_past_month
     except pymysql.Error as e:
         print(f"Database Error: {str(e)}")
@@ -1050,6 +1058,7 @@ def get_new_users_past_month_count():
     finally:
         if connection:
             connection.close()
+
 
 @app.route('/admin/admin_user_management')
 def admin_user_management():
@@ -1752,87 +1761,11 @@ def property_search():
 # Specify the allowed file extensions for image uploads
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 
-# Function to check if a file has an allowed extension
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-@app.route('/register', methods=['GET', 'POST'])
-def register():
-    if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
-        email = request.form['email']
-        user_type = request.form['user_type']
-        
-        # Extract other user attributes here
-        first_name = request.form['first_name']
-        last_name = request.form['last_name']
-        date_of_birth = request.form['date_of_birth']
-        phone_number = request.form['phone_number']
 
-        # Handle file upload
-        if 'profile_image' in request.files:
-            profile_image = request.files['profile_image']
-            if profile_image and allowed_file(profile_image.filename):
-                filename = secure_filename(profile_image.filename)
-                profile_image.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-                profile_image_url = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-            else:
-                flash('Invalid file format for profile image. Allowed formats: png, jpg, jpeg, gif', 'danger')
-                return redirect(request.url)
-        else:
-            # Handle the case where no profile image is provided
-            profile_image_url = None
-
-        # Hash the password using PBKDF2-SHA256
-        password_hash = generate_password_hash(password, method='pbkdf2:sha256', salt_length=8)
-
-        try:
-            connection = get_db_connection()
-            with connection.cursor() as cursor:
-                sql = "INSERT INTO users (Username, PasswordHash, Email, UserType, FirstName, LastName, DateOfBirth, PhoneNumber, ProfileImageURL) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
-                cursor.execute(sql, (username, password_hash, email, user_type, first_name, last_name, date_of_birth, phone_number, profile_image_url))
-                connection.commit()
-                flash('Registration successful! You can now log in.', 'success')
-        except pymysql.Error as e:
-            flash(f"Error: {str(e)}", 'danger')
-        finally:
-            connection.close()
-            return redirect(url_for('login'))
-    return render_template('register.html')
-
-@app.route('/admin/register', methods=['GET', 'POST'])
-def admin_register():
-    if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
-        email = request.form['email']
-        user_type = 'admin'  # Set the user type to 'admin' for admin registrations
-
-        # Extract other admin-specific user attributes here
-        first_name = request.form['first_name']
-        last_name = request.form['last_name']
-        date_of_birth = request.form['date_of_birth']
-        phone_number = request.form['phone_number']
-
-        # Hash the password using PBKDF2-SHA256
-        password_hash = generate_password_hash(password, method='pbkdf2:sha256', salt_length=8)
-
-        # Insert the admin user data into the database
-        try:
-            connection = get_db_connection()
-            with connection.cursor() as cursor:
-                sql = "INSERT INTO users (Username, PasswordHash, Email, UserType, FirstName, LastName, DateOfBirth, PhoneNumber) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
-                cursor.execute(sql, (username, password_hash, email, user_type, first_name, last_name, date_of_birth, phone_number))
-                connection.commit()
-                flash('Admin registration successful!', 'success')
-        except pymysql.Error as e:
-            flash(f"Error: {str(e)}", 'danger')
-        finally:
-            connection.close()
-            return redirect(url_for('admin_login'))
-
-    return render_template('admin/register.html')
+from passlib.hash import sha256_crypt
 
 @app.route('/admin/login', methods=['GET', 'POST'])
 def admin_login():
@@ -1845,51 +1778,144 @@ def admin_login():
         username = request.form['username']
         password = request.form['password']
 
-        # Authenticate the user using your authentication function
-        user_type = authenticate_user(username, password)
+        try:
+            connection = get_db_connection()
+            with connection.cursor() as cursor:
+                cursor.execute("SELECT AdminID, PasswordHash FROM admin WHERE Username = %s", (username,))
+                admin_data = cursor.fetchone()
 
-        if user_type == 'admin':
-            # If the user is an admin, set the session variable and redirect
-            session['UserType'] = user_type
-            flash('Login successful!', 'success')
-            return redirect(url_for('admin_dashboard'))
-        else:
-            flash('Invalid credentials or not an admin user. Please try again.', 'danger')
-            return redirect(url_for('admin_login'))
+                if admin_data:
+                    admin_id, stored_password_hash = admin_data
+
+                    if stored_password_hash and sha256_crypt.verify(password, stored_password_hash):
+                        session['UserType'] = 'admin'
+                        session['UserID'] = admin_id
+                        flash('Login successful!', 'success')
+                        return redirect(url_for('admin_dashboard'))
+                    else:
+                        flash('Invalid password', 'danger')
+                else:
+                    flash('Invalid username', 'danger')
+        except pymysql.Error as e:
+            print(f"Database Error: {str(e)}")
+        finally:
+            if connection:
+                connection.close()
 
     return render_template('/admin/login.html')
 
-def authenticate_user(username, password):
-    try:
-        connection = get_db_connection()
-        with connection.cursor() as cursor:
-            # Query the user's record by username
-            cursor.execute("SELECT UserID, PasswordHash, UserType FROM users WHERE Username = %s", (username,))
-            user_data = cursor.fetchone()
-
-            if user_data:
-                user_id, stored_password_hash, user_type = user_data
-                if check_password_hash(stored_password_hash, password):
-                    session['UserType'] = user_type
-                    session['UserID'] = user_id
-                    return user_type
-                else:
-                    print("Entered Password:", password)
-                    print("Stored Password Hash:", stored_password_hash)
-                    print("Password doesn't match")
-                    return None
-            else:
-                print("User not found")
-                return None
-    except pymysql.Error as e:
-        print(f"Database Error: {str(e)}")
-        return None
-    finally:
-        if connection:
+@app.route('/admin/register', methods=['GET', 'POST'])
+def admin_register():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        email = request.form['email']
+        
+        # Hash the password using Passlib
+        password_hash = sha256_crypt.using(rounds=1000).hash(password)
+        
+        try:
+            connection = get_db_connection()
+            with connection.cursor() as cursor:
+                sql = "INSERT INTO admin (Username, PasswordHash, Email) VALUES (%s, %s, %s)"
+                cursor.execute(sql, (username, password_hash, email))
+                connection.commit()
+                flash('Admin registration successful!', 'success')
+        except pymysql.Error as e:
+            flash(f"Error: {str(e)}", 'danger')
+        finally:
             connection.close()
+            return redirect(url_for('admin_login'))
+    
+    return render_template('/admin/register.html')
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if request.method == 'POST':
+        # Extract form data
+        username = request.form['username']
+        password = request.form['password']
+        email = request.form['email']
+        user_type = request.form['user_type']
+        # ... rest of your form extraction code ...
+
+        # Hash the password using bcrypt
+        password_hash = sha256_crypt.using(rounds=1000).hash(password)
+
+        # Generate a random unique token
+        verification_token = str(uuid.uuid4())
+
+        try:
+            connection = get_db_connection()
+            with connection.cursor() as cursor:
+                # Insert the user along with the verification token
+                sql = "INSERT INTO users (Username, PasswordHash, Email, UserType, VerificationToken) VALUES (%s, %s, %s, %s, %s)"
+                cursor.execute(sql, (username, password_hash, email, user_type, verification_token))
+                connection.commit()
+                
+                # Send verification email
+                msg = Message('Email Verification', sender='your-email@example.com', recipients=[email])
+                verify_url = url_for('verify_email', token=verification_token, _external=True)
+                msg.body = f'Please click the following link to verify your email: {verify_url}'
+                mail.send(msg)
+
+                flash('Registration successful! Please check your email to verify your account.', 'success')
+        except pymysql.Error as e:
+            flash(f"Error: {str(e)}", 'danger')
+        finally:
+            connection.close()
+        return redirect(url_for('login'))
+    else:
+        return render_template('register.html')
+
+@app.route('/verify_email/<token>')
+def verify_email(token):
+    connection = get_db_connection()
+    try:
+        with connection.cursor() as cursor:
+            # Verify the user's email
+            sql = "UPDATE users SET IsEmailVerified = 1 WHERE VerificationToken = %s"
+            cursor.execute(sql, (token,))
+            if cursor.rowcount:
+                connection.commit()
+                flash('Your email has been verified!', 'success')
+            else:
+                flash('Invalid or expired verification link', 'danger')
+    except pymysql.Error as e:
+        flash(f"Error: {str(e)}", 'danger')
+    finally:
+        connection.close()
+    return redirect(url_for('login'))
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+
+        try:
+            connection = get_db_connection()
+            with connection.cursor() as cursor:
+                cursor.execute("SELECT * FROM users WHERE Username = %s", (username,))
+                user = cursor.fetchone()
+                if user:
+                    user_id = user[0]
+                    username = user[1]
+                    password_hash = user[2]
+
+                    if sha256_crypt.verify(password, password_hash):
+                        session['user_id'] = user_id
+                        flash('Login successful!', 'success')
+                        return redirect(url_for('index'))
+                    else:
+                        flash('Invalid password', 'danger')
+                else:
+                    flash('Invalid username', 'danger')
+        except pymysql.Error as e:
+            flash(f"Database Error: {str(e)}", 'danger')
+        finally:
+            connection.close()
+
     return render_template('login.html')
 
 @app.route('/logout')
@@ -2458,6 +2484,7 @@ def input_data():
         return send_file(filled_pdf_filename, as_attachment=True)
 
     return render_template('form.html')
+
 
 if __name__ == '__main__':
     app.run(debug=True)

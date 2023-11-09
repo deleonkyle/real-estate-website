@@ -1,4 +1,5 @@
-from app import app
+#flaskapp.wsgi
+import sys
+sys.path.insert(0, '/var/www/html/real-estate-website')
  
-if __name__ == "__main__":
-    app.run()
+from app import app as application

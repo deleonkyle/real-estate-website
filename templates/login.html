@@ -6,68 +6,78 @@
     <title>Login</title>
     <!-- Include Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Include Font Awesome for eye icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
 </head>
 <body class="d-flex justify-content-center align-items-center" style="min-height: 100vh;">
-<!-- Flash Messages -->
-{% include '/includes/flash_message.html' %}
+    <!-- Flash Messages -->
+    {% include '/includes/flash_message.html' %}
+    
+    <form method="POST" action="/login" class="login-form">
+        <!-- Username Field -->
+        <div class="form-outline mb-4">
+            <input type="username" id="username" name="username" class="form-control" required autofocus />
+            <label class="form-label" for="username">Username</label>
+        </div>
 
-    <form method="POST" action="/login">
-<!-- Add a `div` element with the class `login-form` around the entire form -->
-<div class="login-form">
-  <!-- Add a `div` element with the class `row` around the username input -->
-  <div class="row">
-    <!-- Add a `div` element with the class `col` around the username input -->
-    <div class="col">
-      <div class="form-outline mb-4">
-        <input type="username" id="form2Example1" name="username" class="form-control" required />
-        <label class="form-label" for="form2Example1">Username</label>
-      </div>
-    </div>
-  </div>
+        <!-- Password Field with show password toggle -->
+        <div class="form-outline mb-4">
+            <div class="input-group">
+                <input type="password" id="password" name="password" class="form-control" required />
+                <div class="input-group-append">
+                    <span class="input-group-text">
+                        <i id="togglePassword" class="fas fa-eye" onclick="togglePasswordVisibility();"></i>
+                    </span>
+                </div>
+            </div>
+            <label class="form-label" for="password">Password</label>
+        </div>
 
-  <!-- Add a `div` element with the class `row` around the password input -->
-  <div class="row">
-    <!-- Add a `div` element with the class `col` around the password input -->
-    <div class="col">
-      <div class="form-outline mb-4">
-        <input type="password" id="form2Example2" name="password" class="form-control" required />
-        <label class="form-label" for="form2Example2">Password</label>
-      </div>
-    </div>
-  </div>
+        <div class="row mb-4">
+          <div class="col d-flex justify-content-center">
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="" id="form2Example31" name="remember" checked />
+              <label class="form-check-label" for="form2Example31"> Remember me </label>
+            </div>
+          </div>
+      
+          <div class="col">
+            <a href="/forgot_password">Forgot password?</a>
+          </div>
+        </div>
+      
+        <div class="row mb-4">
+          <div class="col d-flex justify-content-center">
+            <button type="submit" class="btn btn-success btn-block">Sign in</button>
+          </div>
+        </div>
+      
+        <div class="text-center">
+          <p>Not a member? <a href="/register">Register</a></p>
+          </form>
+        </div>
 
-  <!-- Add a `div` element with the class `row` around the remember me checkbox and forgot password link -->
-  <div class="row mb-4">
-    <!-- Add a `div` element with the class `col` around the remember me checkbox -->
-    <div class="col d-flex justify-content-center">
-      <div class="form-check">
-        <input class="form-check-input" type="checkbox" value="" id="form2Example31" name="remember" checked />
-        <label class="form-check-label" for="form2Example31"> Remember me </label>
-      </div>
-    </div>
+        <!-- Include Bootstrap JS and jQuery -->
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-    <!-- Add a `div` element with the class `col` around the forgot password link -->
-    <div class="col">
-      <a href="/forgot_password">Forgot password?</a>
-    </div>
-  </div>
-
-  <!-- Add a `div` element with the class `row` around the submit button -->
-  <div class="row mb-4">
-    <!-- Add a `div` element with the class `col` around the submit button -->
-    <div class="col d-flex justify-content-center">
-      <button type="submit" class="btn btn-primary btn-block">Sign in</button>
-    </div>
-  </div>
-
-  <!-- Add a `div` element with the class `row` around the register buttons -->
-  <div class="text-center">
-    <p>Not a member? <a href="/register">Register</a></p>
+        <!-- Script to toggle password visibility -->
+        <script>
+            function togglePasswordVisibility() {
+                var passwordInput = document.getElementById('password');
+                var togglePasswordIcon = document.getElementById('togglePassword');
+                if (passwordInput.type === 'password') {
+                    passwordInput.type = 'text';
+                    togglePasswordIcon.classList.add('fa-eye-slash');
+                    togglePasswordIcon.classList.remove('fa-eye');
+                } else {
+                    passwordInput.type = 'password';
+                    togglePasswordIcon.classList.remove('fa-eye-slash');
+                    togglePasswordIcon.classList.add('fa-eye');
+                }
+            }
+        </script>
     </form>
-
-    <!-- Include Bootstrap JS and jQuery -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

@@ -128,3 +128,9 @@ body {
   max-width: 200px; /* Adjust the maximum width as needed */
   height: auto;
 }
+/* Use !important to force the style */
+.custom-button {
+  background-color: #3cfd52 !important;
+  color: white !important;
+}
+

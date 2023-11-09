@@ -1,0 +1,21 @@
+2023-11-07 23:23:47,521 - WARNING -  * Debugger is active!
+2023-11-07 23:23:47,527 - INFO -  * Debugger PIN: 721-632-599
+2023-11-07 23:23:58,628 - DEBUG - Stored Password Hash: pbkdf2:sha256:600000$HmADFW6UO0AniSUe$698aa11dca181c0be2280e4aa4ddf1ea547f746570f48d86841da1761f877707
+2023-11-07 23:23:58,687 - INFO - 127.0.0.1 - - [07/Nov/2023 23:23:58] "[35m[1mPOST /admin/login HTTP/1.1[0m" 500 -
+2023-11-07 23:23:59,317 - INFO - 127.0.0.1 - - [07/Nov/2023 23:23:59] "[36mGET /admin/login?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1[0m" 304 -
+2023-11-07 23:23:59,317 - INFO - 127.0.0.1 - - [07/Nov/2023 23:23:59] "[36mGET /admin/login?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1[0m" 304 -
+2023-11-07 23:23:59,337 - INFO - 127.0.0.1 - - [07/Nov/2023 23:23:59] "[36mGET /admin/login?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1[0m" 304 -
+2023-11-07 23:23:59,366 - INFO - 127.0.0.1 - - [07/Nov/2023 23:23:59] "[36mGET /admin/login?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1[0m" 304 -
+2023-11-07 23:26:07,783 - INFO -  * Detected change in 'C:\\Users\\kris\\Desktop\\real-estate-website\\app.py', reloading
+2023-11-07 23:26:13,978 - WARNING -  * Debugger is active!
+2023-11-07 23:26:13,988 - INFO -  * Debugger PIN: 721-632-599
+2023-11-07 23:26:17,771 - DEBUG - Stored Password Hash: pbkdf2:sha256:600000$HmADFW6UO0AniSUe$698aa11dca181c0be2280e4aa4ddf1ea547f746570f48d86841da1761f877707
+2023-11-07 23:26:17,811 - INFO - 127.0.0.1 - - [07/Nov/2023 23:26:17] "[35m[1mPOST /admin/login HTTP/1.1[0m" 500 -
+2023-11-07 23:26:18,425 - INFO - 127.0.0.1 - - [07/Nov/2023 23:26:18] "[36mGET /admin/login?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1[0m" 304 -
+2023-11-07 23:26:18,425 - INFO - 127.0.0.1 - - [07/Nov/2023 23:26:18] "[36mGET /admin/login?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1[0m" 304 -
+2023-11-07 23:26:18,446 - INFO - 127.0.0.1 - - [07/Nov/2023 23:26:18] "[36mGET /admin/login?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1[0m" 304 -
+2023-11-07 23:26:18,484 - INFO - 127.0.0.1 - - [07/Nov/2023 23:26:18] "[36mGET /admin/login?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1[0m" 304 -
+2023-11-07 23:27:03,822 - INFO -  * Detected change in 'C:\\Users\\kris\\Desktop\\real-estate-website\\app.py', reloading
+2023-11-07 23:27:09,768 - WARNING -  * Debugger is active!
+2023-11-07 23:27:09,773 - INFO -  * Debugger PIN: 721-632-599
+2023-11-07 23:27:12,156 - INFO -  * Detected change in 'C:\\Users\\kris\\Desktop\\real-estate-website\\app.py', reloading

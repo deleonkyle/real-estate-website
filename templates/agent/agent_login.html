@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Agent Login</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
     <style>
         body {
             background: #000;
@@ -56,7 +57,7 @@
             border: 2px solid #000;
         }
 
-        .btn {
+        .custom-btn {
             height: 50px;
             width: 100%;
             background: #4CAF50; /* Make the button green */
@@ -64,7 +65,7 @@
             border: none;
         }
 
-        .btn:focus {
+        .custom-btn:focus {
             outline: none;
         }
 
@@ -89,20 +90,42 @@
             <form method="POST" action="/agent/agent_login">
                 <div class="form-data">
                     <div class="forms-inputs mb-4">
-                        <span>Email or username</span>
-                        <input type="text" name="email_or_username" id="email_or_username" class="form-control" required>
+                        <label>Email or Username</label>
+                        <input type="text" name="email_or_username" id="email_or_username" class="form-control" required autofocus>
                     </div>
-                    <div class="forms-inputs mb-4">
-                        <span>Password</span>
-                        <input type="password" name="password" id="password" class="form-control" required>
-                    </div>                        
+                    <div class="form-inputs mb-4">
+                       <label>Password</label>
+                        <div class="input-group">
+                            <input type="password" id="password" name="password" class="form-control" required />
+                            <div class="input-group-append">
+                                </div>
+                                <span class="input-group-text">
+                                    <i id="togglePassword" class="fas fa-eye" onclick="togglePasswordVisibility();"></i>
+                                </span>
+                            </div>
+                        </div>                        
                     <div class="mb-3">
-                        <button type="submit" class="btn btn-dark btn-block">Login</button> <!-- Added btn-block class -->
+                        <button type="submit" class="btn btn-outline-dark btn-block">Login</button> <!-- Added btn-block class -->
                     </div>
                 </div>
             </form>
         </div>
     </div>
+    <script>
+          function togglePasswordVisibility() {
+                var passwordInput = document.getElementById('password');
+                var togglePasswordIcon = document.getElementById('togglePassword');
+                if (passwordInput.type === 'password') {
+                    passwordInput.type = 'text';
+                    togglePasswordIcon.classList.add('fa-eye-slash');
+                    togglePasswordIcon.classList.remove('fa-eye');
+                } else {
+                    passwordInput.type = 'password';
+                    togglePasswordIcon.classList.remove('fa-eye-slash');
+                    togglePasswordIcon.classList.add('fa-eye');
+                }
+            }
+    </script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Astra Realty</title>
+  <link rel="stylesheet" href="/static/assets/style.css">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <style>
    body {
@@ -26,11 +27,6 @@
     main {
       flex-grow: 1;
     }
-
-    .custom-button {
-            background-color: #3cfd52;
-            color: white;
-        }
 
     #services {
       background-color: transparent;
@@ -104,6 +100,7 @@
 
     .custom-button:hover {
       background-color: #29c345;
+      color: rgb(182, 174, 174);
     }
     .property-card {
     background-color: transparent; 
@@ -116,7 +113,7 @@
 <body>
 
   {% include '/includes/navbar.html' %}
-
+  {% include '/includes/flash_message.html' %}
 
   <section class="search-section text-center">
     <div class="container mt-5">
